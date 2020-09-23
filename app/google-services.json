@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1027641212542",
+    "firebase_url": "https://ishi-smart.firebaseio.com",
+    "project_id": "ishi-smart",
+    "storage_bucket": "ishi-smart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027641212542:android:bbf396119a9269fc8ce22f",
+        "android_client_info": {
+          "package_name": "app.web.ishismarteditor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027641212542-luiq3fgkglutka1lm4651cem6gesusgp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8cWOZj2PcZTzh7_D0bQBM2Mx-TZkqlS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027641212542-luiq3fgkglutka1lm4651cem6gesusgp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
