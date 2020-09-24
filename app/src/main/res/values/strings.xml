@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Ishi Smart Editor</string>
+    <string name="share_your_thoughts_and_creativity">Share your Thoughts and Creativity</string>
+    <string name="email_address">Email Address</string>
+    <string name="log_in_now">Log in Now</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="log_in">LOG IN</string>
+    <string name="password">Password</string>
+    <string name="reset_instructions">Please fill your registered Email Address. We will send you password reset instructions</string>
+    <string name="reset">RESET</string>
+    <string name="reset_instruction_sent">Password reset instructions has been sent to your email</string>
 </resources>
