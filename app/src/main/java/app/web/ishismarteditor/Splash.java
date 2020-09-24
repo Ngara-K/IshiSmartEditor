@@ -9,13 +9,17 @@ import android.os.Looper;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import app.web.ishismarteditor.auth.SignIn;
 import app.web.ishismarteditor.databinding.ActivitySplashBinding;
+import app.web.ishismarteditor.ui.MyProfile;
 
 public class Splash extends AppCompatActivity {
 
     ActivitySplashBinding binding;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +28,23 @@ public class Splash extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        /*getting current firebase user*/
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         Glide.with(Splash.this).asGif().load(R.drawable.phone_glasses).into(binding.logo);
 
         HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(Splash.this, SignIn.class));
+
+                if (firebaseUser != null) {
+                    startActivity(new Intent(Splash.this, MyProfile.class));
+                }
+                else {
+                    startActivity(new Intent(Splash.this, SignIn.class));
+                }
+
+                finish();
             }
         }, 3000);
     }

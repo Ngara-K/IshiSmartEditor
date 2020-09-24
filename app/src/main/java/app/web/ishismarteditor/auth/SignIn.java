@@ -17,6 +17,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 
 import app.web.ishismarteditor.databinding.ActivitySignInBinding;
+import app.web.ishismarteditor.ui.MyProfile;
 
 public class SignIn extends AppCompatActivity {
 
@@ -89,9 +90,18 @@ public class SignIn extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     firebaseUser = firebaseAuth.getCurrentUser();
                     if (firebaseUser != null) {
-                        Log.d(TAG, "onComplete: " + firebaseUser.getUid());
+                        startActivity(new Intent(SignIn.this, MyProfile.class));
+                        finish();
+                    }
+                    else {
+
+                        new XPopup.Builder(SignIn.this)
+                                .asConfirm("Oops..!", "An error occurred", null,
+                                        "Okay", null, null,
+                                        true, 0).show();
                     }
                 }
+
                 else {
 
                     popupView.dismissWith(new Runnable() {
