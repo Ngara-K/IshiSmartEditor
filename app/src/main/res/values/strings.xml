@@ -9,4 +9,11 @@
     <string name="reset_instructions">Please fill your registered Email Address. We will send you password reset instructions</string>
     <string name="reset">RESET</string>
     <string name="reset_instruction_sent">Password reset instructions has been sent to your email</string>
+    <string name="my_profile">My Profile</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="location">Location</string>
+    <string name="organization_company">Organization / Company</string>
+    <string name="short_description">Short Description</string>
 </resources>

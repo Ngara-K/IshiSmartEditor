@@ -2,7 +2,6 @@ package app.web.ishismarteditor.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,19 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 
 import app.web.ishismarteditor.databinding.ActivitySignInBinding;
+import app.web.ishismarteditor.ui.MyProfile;
+
+import static app.web.ishismarteditor.utils.firebaseUtils.firebaseAuth;
+import static app.web.ishismarteditor.utils.firebaseUtils.firebaseUser;
 
 public class SignIn extends AppCompatActivity {
 
     private static String TAG = "Sign Activity";
     private ActivitySignInBinding binding;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
     private BasePopupView popupView;
 
     @Override
@@ -32,9 +31,6 @@ public class SignIn extends AppCompatActivity {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        /*initializing firebase instance*/
-        firebaseAuth = FirebaseAuth.getInstance();
 
         /*initializing popupView*/
         popupView = new XPopup.Builder(SignIn.this)
@@ -89,9 +85,18 @@ public class SignIn extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     firebaseUser = firebaseAuth.getCurrentUser();
                     if (firebaseUser != null) {
-                        Log.d(TAG, "onComplete: " + firebaseUser.getUid());
+                        startActivity(new Intent(SignIn.this, MyProfile.class));
+                        finish();
+                    }
+                    else {
+
+                        new XPopup.Builder(SignIn.this)
+                                .asConfirm("Oops..!", "An error occurred", null,
+                                        "Okay", null, null,
+                                        true, 0).show();
                     }
                 }
+
                 else {
 
                     popupView.dismissWith(new Runnable() {
