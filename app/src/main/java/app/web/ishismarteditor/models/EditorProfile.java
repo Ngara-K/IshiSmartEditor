@@ -5,9 +5,9 @@ public class EditorProfile {
     private String uid;
     private String first_name;
     private String last_name;
-    private int phone_number;
+    private long phone_number;
     private String email;
-    private long location;
+    private String location;
     private String organization;
     private String short_description;
 
@@ -15,7 +15,8 @@ public class EditorProfile {
 
     }
 
-    public EditorProfile(String uid, String first_name, String last_name, int phone_number, String email, long location, String organization, String short_description) {
+    public EditorProfile(String uid, String first_name, String last_name, long phone_number,
+                         String email, String location, String organization, String short_description) {
         this.uid = uid;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -50,11 +51,11 @@ public class EditorProfile {
         this.last_name = last_name;
     }
 
-    public int getPhone_number() {
+    public long getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(int phone_number) {
+    public void setPhone_number(long phone_number) {
         this.phone_number = phone_number;
     }
 
@@ -66,11 +67,11 @@ public class EditorProfile {
         this.email = email;
     }
 
-    public long getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(long location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
