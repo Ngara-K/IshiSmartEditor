@@ -1,13 +1,12 @@
 package app.web.ishismarteditor;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.HandlerCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.HandlerCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;

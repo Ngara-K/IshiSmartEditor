@@ -12,4 +12,8 @@
     <string name="my_profile">My Profile</string>
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="location">Location</string>
+    <string name="organization_company">Organization / Company</string>
+    <string name="short_description">Short Description</string>
 </resources>
