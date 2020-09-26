@@ -14,6 +14,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 
+import app.web.ishismarteditor.R;
 import app.web.ishismarteditor.databinding.ActivityMyProfileBinding;
 import app.web.ishismarteditor.models.EditorProfile;
 
@@ -183,7 +184,7 @@ public class MyProfile extends AppCompatActivity {
                     popupView.dismissWith(new Runnable() {
                         @Override
                         public void run() {
-                            showPopUp("Profile updated");
+                            showPopUp(getString(R.string.profile_updated));
                         }
                     });
                 }
@@ -211,7 +212,7 @@ public class MyProfile extends AppCompatActivity {
                     popupView.dismissWith(new Runnable() {
                         @Override
                         public void run() {
-                            showPopUp("Profile updated");
+                            showPopUp(getString(R.string.profile_updated));
                         }
                     });
                 }

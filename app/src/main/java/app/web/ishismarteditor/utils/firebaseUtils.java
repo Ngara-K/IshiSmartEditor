@@ -10,6 +10,9 @@ public class firebaseUtils {
 
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
+    /*editors collection reference*/
     public static CollectionReference editorsCollection  = FirebaseFirestore.getInstance().collection("editors");
+    /*morning tea collection reference*/
+    public static CollectionReference morningTeaReference = FirebaseFirestore.getInstance()
+            .collection("posts").document("morning_tea").collection(String.valueOf(System.currentTimeMillis()));
 }

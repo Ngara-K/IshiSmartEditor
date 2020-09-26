@@ -16,4 +16,13 @@
     <string name="location">Location</string>
     <string name="organization_company">Organization / Company</string>
     <string name="short_description">Short Description</string>
+    <string name="home">Home</string>
+    <string name="message_title">MESSAGE TITLE</string>
+    <string name="message_summary">MESSAGE SUMMARY</string>
+    <string name="message">MESSAGE</string>
+    <string name="profile_updated">Profile updated</string>
+    <string name="required">Required</string>
+    <string name="required_10">Required at least 10 words</string>
+    <string name="required_25">Required at least 25 words</string>
+    <string name="required_100">Required at least 100 words</string>
 </resources>
