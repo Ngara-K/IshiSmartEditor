@@ -1,27 +1,51 @@
 package app.web.ishismarteditor.popups;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 
+import org.commonmark.node.Emphasis;
+import org.commonmark.node.StrongEmphasis;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.Executors;
+
 import app.web.ishismarteditor.R;
 import app.web.ishismarteditor.models.MorningTea;
+import app.web.ishismarteditor.models.MorningTea.*;
+import io.noties.markwon.AbstractMarkwonPlugin;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.MarkwonConfiguration;
+import io.noties.markwon.MarkwonSpansFactory;
+import io.noties.markwon.RenderProps;
+import io.noties.markwon.SpanFactory;
+import io.noties.markwon.editor.MarkwonEditor;
+import io.noties.markwon.editor.MarkwonEditorTextWatcher;
 
-import static app.web.ishismarteditor.R.string.*;
-import static app.web.ishismarteditor.utils.firebaseUtils.editorsCollection;
-import static app.web.ishismarteditor.utils.firebaseUtils.firebaseUser;
-import static app.web.ishismarteditor.utils.firebaseUtils.morningTeaReference;
+import static app.web.ishismarteditor.R.string.required;
+import static app.web.ishismarteditor.R.string.required_10;
+import static app.web.ishismarteditor.R.string.required_100;
+import static app.web.ishismarteditor.R.string.required_25;
+import static app.web.ishismarteditor.utils.AppUtils.editorsCollection;
+import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
+import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 
 public class MorningTeaPopUp extends FullScreenPopupView {
 
@@ -33,6 +57,14 @@ public class MorningTeaPopUp extends FullScreenPopupView {
     private static boolean valid;
     private BasePopupView popupView;
     private MorningTea morningTea;
+    private PostDate postDate;
+
+    /*markwon library*/
+    private Markwon markwon;
+    private MarkwonEditor markwonEditor;
+
+    private Calendar calendar;
+    private SimpleDateFormat date, month, year;
 
     public MorningTeaPopUp(@NonNull Context context) {
         super(context);
@@ -57,6 +89,48 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         title_inLayout = findViewById(R.id.title_inLayout);
         summary_inLayout = findViewById(R.id.summary_inLayout);
         message_inLayout = findViewById(R.id.message_inLayout);
+
+        calendar = Calendar.getInstance();
+
+        date = new SimpleDateFormat("dd");
+        month = new SimpleDateFormat("MMM");
+        year = new SimpleDateFormat("yyyy");
+
+        final String string_date = date.format(calendar.getTime());
+        final String string_month = month.format(calendar.getTime());
+        final String string_year = year.format(calendar.getTime());
+
+        /*initialing markwon*/
+        markwon = Markwon.builder(getContext()).usePlugin(new AbstractMarkwonPlugin() {
+            @Override
+            public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
+                builder.setFactory(Emphasis.class, new SpanFactory() {
+                    @Nullable
+                    @Override
+                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
+                        return new StyleSpan(Typeface.BOLD);
+                    }
+                }).setFactory(StrongEmphasis.class, new SpanFactory() {
+                    @Nullable
+                    @Override
+                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
+                        return new StyleSpan(Typeface.BOLD);
+                    }
+                });
+            }
+        }).build();
+
+        markwonEditor = MarkwonEditor.create(markwon);
+
+        /*markwon editor watcher on text change*/
+        title_input.addTextChangedListener(MarkwonEditorTextWatcher.withPreRender(markwonEditor,
+                Executors.newCachedThreadPool(), title_input));
+
+        summary_input.addTextChangedListener(MarkwonEditorTextWatcher.withPreRender(markwonEditor,
+                Executors.newCachedThreadPool(), summary_input));
+
+        message_input.addTextChangedListener(MarkwonEditorTextWatcher.withPreRender(markwonEditor,
+                Executors.newCachedThreadPool(), message_input));
 
         /*initializing popupView*/
         popupView = new XPopup.Builder(getContext())
@@ -83,13 +157,18 @@ public class MorningTeaPopUp extends FullScreenPopupView {
                     /*show loader...*/
                     showLoading();
 
+                    postDate = new PostDate(string_date, string_month, string_year,
+                            new Timestamp(new Date()));
+
                     /*setting pojo class*/
                     morningTea = new MorningTea(
                             title_input.getText().toString(),
                             summary_input.getText().toString(),
                             message_input.getText().toString(),
                             firebaseUser.getUid(),
-                            editorsCollection.document(firebaseUser.getUid()));
+                            editorsCollection.document(firebaseUser.getUid()),
+                            System.currentTimeMillis(), postDate
+                    );
 
                     /*sending data*/
                     sendMorningTea();
@@ -155,6 +234,8 @@ public class MorningTeaPopUp extends FullScreenPopupView {
                         @Override
                         public void run() {
                             showPopUp("Morning tea sent ...");
+                            /**/
+                            smartDismiss();
                         }
                     });
                 }

@@ -25,4 +25,5 @@
     <string name="required_10">Required at least 10 words</string>
     <string name="required_25">Required at least 25 words</string>
     <string name="required_100">Required at least 100 words</string>
+    <string name="my_activities">My Activities</string>
 </resources>

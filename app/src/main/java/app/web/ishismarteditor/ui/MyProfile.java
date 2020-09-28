@@ -18,8 +18,8 @@ import app.web.ishismarteditor.R;
 import app.web.ishismarteditor.databinding.ActivityMyProfileBinding;
 import app.web.ishismarteditor.models.EditorProfile;
 
-import static app.web.ishismarteditor.utils.firebaseUtils.editorsCollection;
-import static app.web.ishismarteditor.utils.firebaseUtils.firebaseUser;
+import static app.web.ishismarteditor.utils.AppUtils.editorsCollection;
+import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 
 public class MyProfile extends AppCompatActivity {
 

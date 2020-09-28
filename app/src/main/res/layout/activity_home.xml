@@ -63,7 +63,16 @@
         app:layout_constraintTop_toBottomOf="@id/settings_btn"
         android:layout_marginTop="@dimen/_10sdp"
         android:textSize="@dimen/_12ssp"
-        android:text="My Activities"
+        android:text="@string/my_activities"
         android:textStyle="bold"/>
+
+    <ListView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/my_activities_list"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="@id/settings_btn"
+        app:layout_constraintEnd_toEndOf="@id/add_btn"
+        app:layout_constraintTop_toBottomOf="@id/my_activities_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

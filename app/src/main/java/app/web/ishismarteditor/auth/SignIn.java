@@ -16,8 +16,8 @@ import com.lxj.xpopup.core.BasePopupView;
 import app.web.ishismarteditor.databinding.ActivitySignInBinding;
 import app.web.ishismarteditor.ui.MyProfile;
 
-import static app.web.ishismarteditor.utils.firebaseUtils.firebaseAuth;
-import static app.web.ishismarteditor.utils.firebaseUtils.firebaseUser;
+import static app.web.ishismarteditor.utils.AppUtils.firebaseAuth;
+import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 
 public class SignIn extends AppCompatActivity {
 
