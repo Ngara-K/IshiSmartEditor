@@ -1,5 +1,6 @@
 package app.web.ishismarteditor.popups;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.style.StyleSpan;
@@ -10,14 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.Timestamp;
-import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.impl.FullScreenPopupView;
+import com.lxj.xpopup.core.BottomPopupView;
+import com.tapadoo.alerter.Alerter;
 
 import org.commonmark.node.Emphasis;
 import org.commonmark.node.StrongEmphasis;
@@ -29,7 +31,7 @@ import java.util.concurrent.Executors;
 
 import app.web.ishismarteditor.R;
 import app.web.ishismarteditor.models.MorningTea;
-import app.web.ishismarteditor.models.MorningTea.*;
+import app.web.ishismarteditor.models.MorningTea.PostDate;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.MarkwonConfiguration;
@@ -39,6 +41,8 @@ import io.noties.markwon.SpanFactory;
 import io.noties.markwon.editor.MarkwonEditor;
 import io.noties.markwon.editor.MarkwonEditorTextWatcher;
 
+import static app.web.ishismarteditor.R.string.creating_tea_message;
+import static app.web.ishismarteditor.R.string.please_wait;
 import static app.web.ishismarteditor.R.string.required;
 import static app.web.ishismarteditor.R.string.required_10;
 import static app.web.ishismarteditor.R.string.required_100;
@@ -47,7 +51,7 @@ import static app.web.ishismarteditor.utils.AppUtils.editorsCollection;
 import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 
-public class MorningTeaPopUp extends FullScreenPopupView {
+public class MorningTeaPopUp extends BottomPopupView {
 
     private static String TAG = "Morning Tea Popup";
 
@@ -55,7 +59,6 @@ public class MorningTeaPopUp extends FullScreenPopupView {
     private TextInputLayout title_inLayout, summary_inLayout, message_inLayout;
     private MaterialButton back_btn, submit_btn;
     private static boolean valid;
-    private BasePopupView popupView;
     private MorningTea morningTea;
     private PostDate postDate;
 
@@ -123,21 +126,11 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         markwonEditor = MarkwonEditor.create(markwon);
 
         /*markwon editor watcher on text change*/
-        title_input.addTextChangedListener(MarkwonEditorTextWatcher.withPreRender(markwonEditor,
-                Executors.newCachedThreadPool(), title_input));
-
         summary_input.addTextChangedListener(MarkwonEditorTextWatcher.withPreRender(markwonEditor,
                 Executors.newCachedThreadPool(), summary_input));
 
         message_input.addTextChangedListener(MarkwonEditorTextWatcher.withPreRender(markwonEditor,
                 Executors.newCachedThreadPool(), message_input));
-
-        /*initializing popupView*/
-        popupView = new XPopup.Builder(getContext())
-                .autoDismiss(false)
-                .dismissOnBackPressed(false)
-                .dismissOnTouchOutside(false)
-                .asLoading();
 
         back_btn.setOnClickListener(new OnClickListener() {
             @Override
@@ -151,18 +144,18 @@ public class MorningTeaPopUp extends FullScreenPopupView {
             public void onClick(View v) {
                 if (!validation()) {
                     /*if validation fails*/
-                    showPopUp("Check for errors");
+                    showMessage("Check for errors");
                 }
                 else {
                     /*show loader...*/
-                    showLoading();
+                    showLoading(getContext().getString(creating_tea_message));
 
                     postDate = new PostDate(string_date, string_month, string_year,
                             new Timestamp(new Date()));
 
                     /*setting pojo class*/
                     morningTea = new MorningTea(
-                            title_input.getText().toString(),
+                            System.nanoTime(), title_input.getText().toString(),
                             summary_input.getText().toString(),
                             message_input.getText().toString(),
                             firebaseUser.getUid(),
@@ -175,10 +168,6 @@ public class MorningTeaPopUp extends FullScreenPopupView {
                 }
             }
         });
-    }
-
-    private void showLoading() {
-        popupView.show();
     }
 
     /*validating inputs*/
@@ -230,34 +219,41 @@ public class MorningTeaPopUp extends FullScreenPopupView {
             public void onComplete(@NonNull final Task<Void> task) {
                 if (task.isSuccessful()) {
                     /*show message when successful */
-                    popupView.dismissWith(new Runnable() {
+                    dismissWith(new Runnable() {
                         @Override
                         public void run() {
-                            showPopUp("Morning tea sent ...");
-                            /**/
-                            smartDismiss();
+                            showMessage("Morning tea sent ...");
                         }
                     });
                 }
 
                 else {
                     /*show message when failed*/
-                    popupView.dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showPopUp(task.getException().getMessage());
-                        }
-                    });
+                    showMessage(task.getException().getMessage());
                 }
             }
         });
     }
 
-    /*show popup*/
-    private void showPopUp(String string_notify) {
-        new XPopup.Builder(getContext())
-                .asConfirm("IshiSmart.!", string_notify, null,
-                        "Okay", null, null,
-                        true, 0).show();
+    private void showMessage(String message) {
+        Alerter.create((Activity) getContext())
+                .setTitle(message)
+                .setDismissable(true)
+                .enableClickAnimation(true)
+                .hideIcon()
+                .enableSwipeToDismiss()
+                .setDuration(3500)
+                .setSound()
+                .show();
+    }
+
+    private void showLoading(String message) {
+        Alerter.create((Activity) getContext())
+                .setTitle(getContext().getString(please_wait))
+                .setText(message)
+                .disableOutsideTouch()
+                .setDismissable(false)
+                .enableProgress(true)
+                .show();
     }
 }

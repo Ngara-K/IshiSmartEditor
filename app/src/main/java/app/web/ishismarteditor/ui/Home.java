@@ -1,8 +1,10 @@
 package app.web.ishismarteditor.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,6 +64,16 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        binding.myActivitiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemClick: " + teaList.get(position).getId());
+
+                Intent intent = new Intent(Home.this, ViewPost.class);
+                intent.putExtra("id", teaList.get(position).getId());
+                startActivity(intent);
+            }
+        });
     }
 
     private void getLiveActivities() {
@@ -87,6 +99,13 @@ public class Home extends AppCompatActivity {
                 /*setting adapter*/
                 activitiesAdapter = new MyActivitiesAdapter(Home.this, R.layout.my_activites_timeline_layout, teaList);
                 binding.myActivitiesList.setAdapter(activitiesAdapter);
+
+                if (teaList.size() == 0) {
+                    binding.emptyActivitiesLayout.setVisibility(View.VISIBLE);
+                }
+                else {
+                    binding.emptyActivitiesLayout.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -95,5 +114,17 @@ public class Home extends AppCompatActivity {
     public void onBackPressed() {
         /*move app to background*/
         moveTaskToBack(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLiveActivities();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getLiveActivities();
     }
 }

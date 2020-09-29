@@ -20,7 +20,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="@dimen/_2sdp"
-        android:background="@color/white_smoke"
+        android:background="@color/primaryBg"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/color_view">

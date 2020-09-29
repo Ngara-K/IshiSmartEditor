@@ -26,4 +26,9 @@
     <string name="required_25">Required at least 25 words</string>
     <string name="required_100">Required at least 100 words</string>
     <string name="my_activities">My Activities</string>
+    <string name="creating_tea_message">Creating Morning Tea Message</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="post_deleted_successfully">Post deleted successfully ..</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="deleting_post">Deleting Post ..</string>
 </resources>

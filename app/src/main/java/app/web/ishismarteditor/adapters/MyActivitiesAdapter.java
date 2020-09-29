@@ -3,8 +3,6 @@ package app.web.ishismarteditor.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -13,20 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.commonmark.node.Emphasis;
-import org.commonmark.node.StrongEmphasis;
-
 import java.util.List;
 import java.util.Random;
 
 import app.web.ishismarteditor.R;
 import app.web.ishismarteditor.models.MorningTea;
-import io.noties.markwon.AbstractMarkwonPlugin;
-import io.noties.markwon.Markwon;
-import io.noties.markwon.MarkwonConfiguration;
-import io.noties.markwon.MarkwonSpansFactory;
-import io.noties.markwon.RenderProps;
-import io.noties.markwon.SpanFactory;
 import me.ngarak.timeagotextview.TimeAgoTextView;
 
 public class MyActivitiesAdapter extends ArrayAdapter<MorningTea> {
@@ -59,26 +48,6 @@ public class MyActivitiesAdapter extends ArrayAdapter<MorningTea> {
         TextView message_title = convertView.findViewById(R.id.post_title);
         TimeAgoTextView post_time = convertView.findViewById(R.id.post_time_ago);
 
-        /*configuring markdown text*/
-        Markwon markwon = Markwon.builder(getContext()).usePlugin(new AbstractMarkwonPlugin() {
-            @Override
-            public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
-                builder.setFactory(Emphasis.class, new SpanFactory() {
-                    @Nullable
-                    @Override
-                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
-                        return new StyleSpan(Typeface.BOLD);
-                    }
-                }).setFactory(StrongEmphasis.class, new SpanFactory() {
-                    @Nullable
-                    @Override
-                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
-                        return new StyleSpan(Typeface.BOLD);
-                    }
-                });
-            }
-        }).build();
-
         if (morningTea != null) {
             view.setBackgroundColor(color);
             date_tv.setText(morningTea.getPost_date().getDate());
@@ -87,7 +56,7 @@ public class MyActivitiesAdapter extends ArrayAdapter<MorningTea> {
             month_tv.setText(morningTea.getPost_date().getMonth());
             year_tv.setText(morningTea.getPost_date().getYear());
 
-            markwon.setMarkdown(message_title, morningTea.getMessage_title());
+            message_title.setText(morningTea.getMessage_title());
             post_time.setDate(morningTea.getPost_date().getTimestamp().toDate());
         }
 

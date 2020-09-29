@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ViewPost">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_20sdp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/top_view"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_12sdp"
+            android:layout_margin="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:enabled="false"
+            app:cornerRadius="@dimen/_20sdp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back_btn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/ic_back"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_view"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
+
+        <me.ngarak.timeagotextview.TimeAgoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/time_ago"
+            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintStart_toEndOf="@id/back_btn"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/back_btn"
+            app:layout_constraintBottom_toBottomOf="@id/back_btn" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_btn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintEnd_toStartOf="@id/delete_btn"
+            app:layout_constraintTop_toBottomOf="@id/top_view"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/delete_btn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/ic_delete_forever"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_view"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:id="@+id/divider"
+            app:layout_constraintStart_toStartOf="@id/back_btn"
+            app:layout_constraintEnd_toEndOf="@id/delete_btn"
+            app:layout_constraintTop_toBottomOf="@id/back_btn"
+            style="@style/horizontal_divider" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:srcCompat="@drawable/ic_user"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintStart_toStartOf="@id/back_btn"
+            android:id="@+id/user_icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:id="@+id/user_display_name"
+            app:layout_constraintStart_toEndOf="@id/user_icon"
+            app:layout_constraintTop_toTopOf="@id/user_icon"
+            app:layout_constraintBottom_toTopOf="@id/user_email"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:id="@+id/user_email"
+            app:layout_constraintStart_toEndOf="@id/user_icon"
+            app:layout_constraintTop_toBottomOf="@id/user_display_name"
+            app:layout_constraintBottom_toBottomOf="@id/user_icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:id="@+id/message_title"
+            app:layout_constraintStart_toStartOf="@id/back_btn"
+            app:layout_constraintEnd_toEndOf="@id/delete_btn"
+            app:layout_constraintTop_toBottomOf="@id/user_icon"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:id="@+id/message_summary"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="@id/back_btn"
+            app:layout_constraintEnd_toEndOf="@id/delete_btn"
+            app:layout_constraintTop_toBottomOf="@id/message_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:id="@+id/message"
+            app:layout_constraintStart_toStartOf="@id/back_btn"
+            app:layout_constraintEnd_toEndOf="@id/delete_btn"
+            app:layout_constraintTop_toBottomOf="@id/message_summary" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

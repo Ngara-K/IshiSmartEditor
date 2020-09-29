@@ -3,8 +3,11 @@ package app.web.ishismarteditor.models;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
-public class MorningTea {
+import java.io.Serializable;
 
+public class MorningTea implements Serializable {
+
+    private long id;
     private String message_title;
     private String message_summary;
     private String message_body;
@@ -13,11 +16,13 @@ public class MorningTea {
     private long time_mills;
     private PostDate post_date;
 
-    MorningTea () {
+    public MorningTea () {
 
     }
 
-    public MorningTea(String message_title, String message_summary, String message_body, String author_id, DocumentReference editor_ref, long time_mills, PostDate post_date) {
+    public MorningTea(long id, String message_title, String message_summary, String message_body,
+                      String author_id, DocumentReference editor_ref, long time_mills, PostDate post_date) {
+        this.id = id;
         this.message_title = message_title;
         this.message_summary = message_summary;
         this.message_body = message_body;
@@ -25,6 +30,14 @@ public class MorningTea {
         this.editor_ref = editor_ref;
         this.time_mills = time_mills;
         this.post_date = post_date;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getMessage_title() {
@@ -51,14 +64,6 @@ public class MorningTea {
         this.message_body = message_body;
     }
 
-    public DocumentReference getEditor_ref() {
-        return editor_ref;
-    }
-
-    public void setEditor_ref(DocumentReference editor_ref) {
-        this.editor_ref = editor_ref;
-    }
-
     public String getAuthor_id() {
         return author_id;
     }
@@ -67,12 +72,12 @@ public class MorningTea {
         this.author_id = author_id;
     }
 
-    public PostDate getPost_date() {
-        return post_date;
+    public DocumentReference getEditor_ref() {
+        return editor_ref;
     }
 
-    public void setPost_date(PostDate post_date) {
-        this.post_date = post_date;
+    public void setEditor_ref(DocumentReference editor_ref) {
+        this.editor_ref = editor_ref;
     }
 
     public long getTime_mills() {
@@ -83,22 +88,31 @@ public class MorningTea {
         this.time_mills = time_mills;
     }
 
-    public static class PostDate {
+    public PostDate getPost_date() {
+        return post_date;
+    }
+
+    public void setPost_date(PostDate post_date) {
+        this.post_date = post_date;
+    }
+
+
+    public static class PostDate implements Serializable{
 
         private String date;
         private String month;
         private String year;
         private Timestamp timestamp;
 
+        public PostDate () {
+
+        }
+
         public PostDate(String date, String month, String year, Timestamp timestamp) {
             this.date = date;
             this.month = month;
             this.year = year;
             this.timestamp = timestamp;
-        }
-
-        PostDate () {
-
         }
 
         public String getDate() {

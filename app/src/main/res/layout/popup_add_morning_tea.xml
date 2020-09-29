@@ -1,58 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/_10sdp"
-    android:background="@color/white_smoke">
+    android:scrollbars="none"
+    android:background="@color/primaryBg">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/back_btn"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="@dimen/_45sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:padding="0dp"
-        app:icon="@drawable/ic_back"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/submit_btn"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="@dimen/_45sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
-        android:padding="0dp"
-        app:icon="@drawable/ic_add_check"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/back_btn"
-        app:layout_constraintEnd_toEndOf="@id/submit_btn"
-        app:layout_constraintTop_toBottomOf="@id/back_btn">
+        android:paddingTop="@dimen/_10ssp"
+        android:paddingBottom="@dimen/_10ssp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back_btn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/ic_back"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submit_btn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/ic_add_check"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="@id/back_btn"
+            app:layout_constraintEnd_toEndOf="@id/submit_btn"
+            app:layout_constraintTop_toBottomOf="@id/back_btn">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/top_view"
@@ -90,7 +93,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="2"
+                    android:minLines="2"
+                    android:maxLength="500"
                     android:id="@+id/title_input"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -117,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:minLines="4"
-                    android:maxLines="6"
+                    android:maxLength="1500"
                     android:id="@+id/summary_input"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -145,14 +149,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:minLines="8"
-                    android:maxLines="250"
+                    android:minLines="15"
+                    android:maxLength="5000"
                     android:id="@+id/message_input"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
