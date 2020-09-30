@@ -8,7 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.lxj.xpopup.XPopup;
@@ -43,6 +46,9 @@ public class MyProfile extends AppCompatActivity {
                 .dismissOnTouchOutside(false)
                 .asLoading();
 
+        /*getting profile*/
+        getEditorProfile();
+
         binding.editUpdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,11 +77,51 @@ public class MyProfile extends AppCompatActivity {
                 }
             }
         });
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
+    /*getting profile*/
     private void getEditorProfile() {
         showLoading();
 
+        editorsCollection.document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull final Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    popupView.smartDismiss();
+
+                    if (task.getResult().exists()) {
+                        /*results ot pojo*/
+                        editorProfile = task.getResult().toObject(EditorProfile.class);
+
+                        /*setters*/
+                        binding.firstNameInput.setText(editorProfile.getFirst_name());
+                        binding.lastNameInput.setText(editorProfile.getLast_name());
+                        binding.emailAddressInput.setText(editorProfile.getEmail());
+                        binding.phoneNumberInput.setText(Long.toString(editorProfile.getPhone_number()));
+                        binding.locationInput.setText(editorProfile.getLocation());
+                        binding.organizationInput.setText(editorProfile.getOrganization());
+                        binding.shortDescriptionInput.setText(editorProfile.getShort_description());
+                    }
+                }
+                else {
+                    Log.d(TAG, "onComplete: " + task.getException());
+                    /*On Error*/
+                    popupView.dismissWith(new Runnable() {
+                        @Override
+                        public void run() {
+                            showPopUp(task.getException().getMessage());
+                        }
+                    });
+                }
+            }
+        });
     }
 
     /*validating required inputs*/
@@ -131,20 +177,8 @@ public class MyProfile extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot snapshot = task.getResult();
 
-                    /*
-                    * Checking if document exists
-                    * Merge document
-                    * or
-                    * Create document
-                    * */
-                    
-                    if (snapshot.exists()) {
-                        mergeProfile();
-                    }
-                    else {
-                        setProfile();
-                    }
-
+                    /*updating firebase profile first*/
+                    updateFirebaseProfile(snapshot);
                 }
                 else {
                     Log.d(TAG, "onComplete: " + task.getException());
@@ -225,6 +259,43 @@ public class MyProfile extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+    }
+
+    /*updating firebase user display name*/
+    private void updateFirebaseProfile(final DocumentSnapshot snapshot) {
+
+        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                .setDisplayName(
+                        binding.firstNameInput.getText().toString()
+                        + " " + binding.lastNameInput.getText().toString()
+                ).build();
+
+        firebaseUser.updateProfile(profileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                /*
+                 * Checking if document exists
+                 * Merge document
+                 * or
+                 * Create document
+                 * */
+
+                if (snapshot.exists()) {
+                    mergeProfile();
+                }
+                else {
+                    setProfile();
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure() returned: " + e.getMessage());
+                popupView.smartDismiss();
             }
         });
     }

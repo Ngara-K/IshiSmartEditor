@@ -180,6 +180,7 @@ public class ViewPost extends AppCompatActivity {
 
     /*details setter*/
     private void setPostDetails(MorningTea morningTea) {
+        binding.userDisplayName.setText(firebaseUser.getDisplayName());
         binding.userEmail.setText(firebaseUser.getEmail());
         binding.messageTitle.setText(morningTea.getMessage_title());
         markwon.setMarkdown(binding.messageSummary, morningTea.getMessage_summary());

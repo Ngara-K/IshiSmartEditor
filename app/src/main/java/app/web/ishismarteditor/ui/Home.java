@@ -64,6 +64,7 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        /*view full post*/
         binding.myActivitiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -72,6 +73,14 @@ public class Home extends AppCompatActivity {
                 Intent intent = new Intent(Home.this, ViewPost.class);
                 intent.putExtra("id", teaList.get(position).getId());
                 startActivity(intent);
+            }
+        });
+
+        /**/
+        binding.settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Home.this, MyProfile.class));
             }
         });
     }
