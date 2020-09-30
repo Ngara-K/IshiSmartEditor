@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.web.ishismarteditor">
-
     <!-- PERMISSION -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,6 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialNoActionBar">
+        <activity android:name=".ui.ViewPost"></activity>
+        <activity android:name=".ui.Home" />
         <activity android:name=".ui.MyProfile" />
         <activity android:name=".auth.ResetPassword" />
         <activity android:name=".auth.SignIn" />

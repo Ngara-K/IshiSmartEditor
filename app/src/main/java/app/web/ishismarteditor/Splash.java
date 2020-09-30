@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import app.web.ishismarteditor.auth.SignIn;
 import app.web.ishismarteditor.databinding.ActivitySplashBinding;
-import app.web.ishismarteditor.ui.MyProfile;
+import app.web.ishismarteditor.ui.Home;
 
 public class Splash extends AppCompatActivity {
 
@@ -38,7 +38,7 @@ public class Splash extends AppCompatActivity {
             public void run() {
 
                 if (firebaseUser != null) {
-                    startActivity(new Intent(Splash.this, MyProfile.class));
+                    startActivity(new Intent(Splash.this, Home.class));
                 }
                 else {
                     startActivity(new Intent(Splash.this, SignIn.class));

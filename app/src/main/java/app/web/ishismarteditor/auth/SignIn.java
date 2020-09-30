@@ -14,10 +14,10 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 
 import app.web.ishismarteditor.databinding.ActivitySignInBinding;
-import app.web.ishismarteditor.ui.MyProfile;
+import app.web.ishismarteditor.ui.Home;
 
-import static app.web.ishismarteditor.utils.firebaseUtils.firebaseAuth;
-import static app.web.ishismarteditor.utils.firebaseUtils.firebaseUser;
+import static app.web.ishismarteditor.utils.AppUtils.firebaseAuth;
+import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 
 public class SignIn extends AppCompatActivity {
 
@@ -85,7 +85,7 @@ public class SignIn extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     firebaseUser = firebaseAuth.getCurrentUser();
                     if (firebaseUser != null) {
-                        startActivity(new Intent(SignIn.this, MyProfile.class));
+                        startActivity(new Intent(SignIn.this, Home.class));
                         finish();
                     }
                     else {

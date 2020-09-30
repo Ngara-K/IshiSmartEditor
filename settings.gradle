@@ -1,2 +1,3 @@
+include ':time_ago'
 include ':app'
 rootProject.name = "Ishi Smart Editor"
