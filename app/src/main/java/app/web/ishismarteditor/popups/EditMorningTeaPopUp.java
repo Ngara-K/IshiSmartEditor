@@ -1,5 +1,6 @@
 package app.web.ishismarteditor.popups;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -11,25 +12,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.Timestamp;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 import com.tapadoo.alerter.Alerter;
 
 import org.commonmark.node.Emphasis;
 import org.commonmark.node.StrongEmphasis;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.Executors;
 
 import app.web.ishismarteditor.R;
-import app.web.ishismarteditor.models.MorningTea;
-import app.web.ishismarteditor.models.MorningTea.PostDate;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.MarkwonConfiguration;
@@ -39,17 +35,15 @@ import io.noties.markwon.SpanFactory;
 import io.noties.markwon.editor.MarkwonEditor;
 import io.noties.markwon.editor.MarkwonEditorTextWatcher;
 
-import static app.web.ishismarteditor.R.string.creating_tea_message;
 import static app.web.ishismarteditor.R.string.please_wait;
 import static app.web.ishismarteditor.R.string.required;
 import static app.web.ishismarteditor.R.string.required_10;
 import static app.web.ishismarteditor.R.string.required_100;
 import static app.web.ishismarteditor.R.string.required_25;
-import static app.web.ishismarteditor.utils.AppUtils.editorsCollection;
-import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 
-public class MorningTeaPopUp extends FullScreenPopupView {
+@SuppressLint("ViewConstructor")
+public class EditMorningTeaPopUp extends FullScreenPopupView {
 
     private static String TAG = "Morning Tea Popup";
 
@@ -57,18 +51,19 @@ public class MorningTeaPopUp extends FullScreenPopupView {
     private TextInputLayout title_inLayout, summary_inLayout, message_inLayout;
     private MaterialButton back_btn, submit_btn;
     private static boolean valid;
-    private MorningTea morningTea;
-    private PostDate postDate;
-
     /*markwon library*/
     private Markwon markwon;
     private MarkwonEditor markwonEditor;
 
-    private Calendar calendar;
-    private SimpleDateFormat date, month, year;
+    private static String doc_id, message_title, message_summary, message_body;
 
-    public MorningTeaPopUp(@NonNull Context context) {
+    public EditMorningTeaPopUp(@NonNull Context context, String document_id,
+                               String title, String summary, String message) {
         super(context);
+        doc_id = document_id;
+        message_title = title;
+        message_summary = summary;
+        message_body = message;
     }
 
     @Override
@@ -91,15 +86,10 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         summary_inLayout = findViewById(R.id.summary_inLayout);
         message_inLayout = findViewById(R.id.message_inLayout);
 
-        calendar = Calendar.getInstance();
-
-        date = new SimpleDateFormat("dd");
-        month = new SimpleDateFormat("MMM");
-        year = new SimpleDateFormat("yyyy");
-
-        final String string_date = date.format(calendar.getTime());
-        final String string_month = month.format(calendar.getTime());
-        final String string_year = year.format(calendar.getTime());
+        /*setters*/
+        title_input.setText(message_title);
+        summary_input.setText(message_summary);
+        message_input.setText(message_body);
 
         /*initialing markwon*/
         markwon = Markwon.builder(getContext()).usePlugin(new AbstractMarkwonPlugin() {
@@ -146,23 +136,10 @@ public class MorningTeaPopUp extends FullScreenPopupView {
                 }
                 else {
                     /*show loader...*/
-                    showLoading(getContext().getString(creating_tea_message));
-
-                    postDate = new PostDate(string_date, string_month, string_year,
-                            new Timestamp(new Date()));
-
-                    /*setting pojo class*/
-                    morningTea = new MorningTea(
-                            System.nanoTime(), title_input.getText().toString(),
-                            summary_input.getText().toString(),
-                            message_input.getText().toString(),
-                            firebaseUser.getUid(),
-                            editorsCollection.document(firebaseUser.getUid()),
-                            System.currentTimeMillis(), postDate
-                    );
+                    showLoading("Editing Post ...");
 
                     /*sending data*/
-                    sendMorningTea();
+                    editMorningTea();
                 }
             }
         });
@@ -209,26 +186,34 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         return valid;
     }
 
-    private void sendMorningTea() {
-        Log.d(TAG, "sendMorningTea: ");
+    private void editMorningTea() {
+        Log.d(TAG, "editMorningTea: ");
 
-        morningTeaReference.document().set(morningTea).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull final Task<Void> task) {
-                if (task.isSuccessful()) {
-                    /*show message when successful */
-                    dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showMessage("Morning tea sent ...");
+        morningTeaReference.document(doc_id).update("message_title", title_input.getText().toString(),
+                "message_summary", summary_input.getText().toString(),
+                "message_body", message_input.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            /*show message when successful */
+                            dismissWith(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showMessage("Edited Successful ...");
+                                }
+                            });
                         }
-                    });
-                }
 
-                else {
-                    /*show message when failed*/
-                    showMessage(task.getException().getMessage());
-                }
+                        else {
+                            /*show message when failed*/
+                            showMessage(task.getException().getMessage());
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure() returned: " + e.getMessage());
             }
         });
     }

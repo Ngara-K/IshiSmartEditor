@@ -10,8 +10,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -26,6 +28,7 @@ import org.commonmark.node.StrongEmphasis;
 import app.web.ishismarteditor.R;
 import app.web.ishismarteditor.databinding.ActivityViewPostBinding;
 import app.web.ishismarteditor.models.MorningTea;
+import app.web.ishismarteditor.popups.EditMorningTeaPopUp;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.MarkwonConfiguration;
@@ -97,6 +100,26 @@ public class ViewPost extends AppCompatActivity {
                 showConfirmationDialog();
             }
         });
+
+        /*editing post*/
+        binding.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new XPopup.Builder(ViewPost.this)
+                        .asCustom(new EditMorningTeaPopUp(ViewPost.this,
+                                document_id, binding.messageTitle.getText().toString(),
+                                binding.messageSummary.getText().toString(),
+                                binding.message.getText().toString())).show();
+            }
+        });
+
+        /*swipe to refresh post details*/
+        binding.refreshPostLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getPostDetails();
+            }
+        });
     }
 
     /*xpopup dialog*/
@@ -127,11 +150,12 @@ public class ViewPost extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         if (task.isSuccessful()) {
-                            for (DocumentSnapshot doc: task.getResult().getDocuments()) {
+                            /*dismiss freshing*/
+                            binding.refreshPostLayout.setRefreshing(false);
 
+                            for (DocumentSnapshot doc: task.getResult().getDocuments()) {
                                 /*getting document id*/
                                 document_id = doc.getId();
-
                                 /*document to pojo*/
                                 MorningTea morningTea = doc.toObject(MorningTea.class);
                                 /*details setter*/
@@ -140,11 +164,18 @@ public class ViewPost extends AppCompatActivity {
                         }
 
                         else {
+                            binding.refreshPostLayout.setRefreshing(false);
                             /*id not found*/
                             showAlert(getResources().getString(R.string.something_went_wrong));
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure() returned: " + e.getMessage());
+                binding.refreshPostLayout.setRefreshing(false);
+            }
+        });
     }
 
     /*details setter*/
