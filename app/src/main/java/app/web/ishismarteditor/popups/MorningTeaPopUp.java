@@ -38,6 +38,7 @@ import io.noties.markwon.RenderProps;
 import io.noties.markwon.SpanFactory;
 import io.noties.markwon.editor.MarkwonEditor;
 import io.noties.markwon.editor.MarkwonEditorTextWatcher;
+import io.noties.markwon.linkify.LinkifyPlugin;
 
 import static app.web.ishismarteditor.R.string.creating_tea_message;
 import static app.web.ishismarteditor.R.string.please_wait;
@@ -52,11 +53,10 @@ import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 public class MorningTeaPopUp extends FullScreenPopupView {
 
     private static String TAG = "Morning Tea Popup";
-
+    private static boolean valid;
     private TextInputEditText title_input, summary_input, message_input;
     private TextInputLayout title_inLayout, summary_inLayout, message_inLayout;
     private MaterialButton back_btn, submit_btn;
-    private static boolean valid;
     private MorningTea morningTea;
     private PostDate postDate;
 
@@ -105,21 +105,13 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         markwon = Markwon.builder(getContext()).usePlugin(new AbstractMarkwonPlugin() {
             @Override
             public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
-                builder.setFactory(Emphasis.class, new SpanFactory() {
-                    @Nullable
-                    @Override
-                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
-                        return new StyleSpan(Typeface.BOLD);
-                    }
-                }).setFactory(StrongEmphasis.class, new SpanFactory() {
-                    @Nullable
-                    @Override
-                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
-                        return new StyleSpan(Typeface.BOLD);
-                    }
-                });
+                builder.setFactory(Emphasis.class,
+                        (configuration, props) ->
+                                new StyleSpan(Typeface.BOLD)).setFactory(StrongEmphasis.class,
+                        (configuration, props) ->
+                                new StyleSpan(Typeface.BOLD));
             }
-        }).build();
+        }).usePlugin(LinkifyPlugin.create()).build();
 
         markwonEditor = MarkwonEditor.create(markwon);
 
@@ -130,40 +122,31 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         message_input.addTextChangedListener(MarkwonEditorTextWatcher.withPreRender(markwonEditor,
                 Executors.newCachedThreadPool(), message_input));
 
-        back_btn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                smartDismiss();
-            }
-        });
+        back_btn.setOnClickListener(v -> smartDismiss());
 
-        submit_btn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!validation()) {
-                    /*if validation fails*/
-                    showMessage("Check for errors");
-                }
-                else {
-                    /*show loader...*/
-                    showLoading(getContext().getString(creating_tea_message));
+        submit_btn.setOnClickListener(v -> {
+            if (!validation()) {
+                /*if validation fails*/
+                showMessage("Check for errors");
+            } else {
+                /*show loader...*/
+                showLoading(getContext().getString(creating_tea_message));
 
-                    postDate = new PostDate(string_date, string_month, string_year,
-                            new Timestamp(new Date()));
+                postDate = new PostDate(string_date, string_month, string_year,
+                        new Timestamp(new Date()));
 
-                    /*setting pojo class*/
-                    morningTea = new MorningTea(
-                            System.nanoTime(), title_input.getText().toString(),
-                            summary_input.getText().toString(),
-                            message_input.getText().toString(),
-                            firebaseUser.getUid(),
-                            editorsCollection.document(firebaseUser.getUid()),
-                            System.currentTimeMillis(), postDate
-                    );
+                /*setting pojo class*/
+                morningTea = new MorningTea(
+                        System.nanoTime(), title_input.getText().toString(),
+                        summary_input.getText().toString(),
+                        message_input.getText().toString(),
+                        firebaseUser.getUid(),
+                        editorsCollection.document(firebaseUser.getUid()),
+                        System.currentTimeMillis(), postDate
+                );
 
-                    /*sending data*/
-                    sendMorningTea();
-                }
+                /*sending data*/
+                sendMorningTea();
             }
         });
     }
@@ -175,60 +158,38 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         if (title_input.getText().toString().isEmpty()) {
             title_inLayout.setError(getContext().getString(required));
             valid = false;
-        }
-        
-        else if (title_input.getText().toString().length() < 10) {
+        } else if (title_input.getText().toString().length() < 10) {
             title_inLayout.setError(getContext().getString(required_10));
             valid = false;
-        }
-        
-        else if (summary_input.getText().toString().isEmpty()) {
+        } else if (summary_input.getText().toString().isEmpty()) {
             summary_inLayout.setError(getContext().getString(required));
             valid = false;
-        }
-        
-        else if (summary_input.getText().toString().length() < 25) {
+        } else if (summary_input.getText().toString().length() < 25) {
             summary_inLayout.setError(getContext().getString(required_25));
             valid = false;
-        }
-
-        else if (message_input.getText().toString().isEmpty()) {
+        } else if (message_input.getText().toString().isEmpty()) {
             message_inLayout.setError(getContext().getString(required));
             valid = false;
-        }
-
-        else if (message_input.getText().toString().length() < 100) {
+        } else if (message_input.getText().toString().length() < 100) {
             message_inLayout.setError(getContext().getString(required_100));
             valid = false;
-        }
-
-        else {
+        } else {
             valid = true;
         }
-        
+
         return valid;
     }
 
     private void sendMorningTea() {
         Log.d(TAG, "sendMorningTea: ");
 
-        morningTeaReference.document().set(morningTea).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull final Task<Void> task) {
-                if (task.isSuccessful()) {
-                    /*show message when successful */
-                    dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showMessage("Morning tea sent ...");
-                        }
-                    });
-                }
-
-                else {
-                    /*show message when failed*/
-                    showMessage(task.getException().getMessage());
-                }
+        morningTeaReference.document().set(morningTea).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                /*show message when successful */
+                dismissWith(() -> showMessage("Morning tea sent ..."));
+            } else {
+                /*show message when failed*/
+                showMessage(task.getException().getMessage());
             }
         });
     }

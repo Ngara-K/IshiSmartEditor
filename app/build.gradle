@@ -26,10 +26,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     configurations {
         cleanedAnnotations
-        compile.exclude group: 'org.jetbrains' , module:'annotations'
+        compile.exclude group: 'org.jetbrains', module: 'annotations'
     }
 }
 
@@ -65,11 +69,10 @@ dependencies {
     /*marking bold, italic, stroke */
     implementation "io.noties.markwon:core:4.6.0"
     implementation "io.noties.markwon:editor:4.6.0"
-    implementation "io.noties.markwon:html:4.6.0"
-    implementation "io.noties.markwon:simple-ext:4.6.0"
-    implementation "io.noties.markwon:ext-strikethrough:4.6.0"
-    implementation"io.noties.markwon:linkify:4.6.0"
-    implementation"io.noties.markwon:syntax-highlight:4.6.0"
+    implementation "io.noties.markwon:linkify:4.6.0"
+
+    /*compressor*/
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.9'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

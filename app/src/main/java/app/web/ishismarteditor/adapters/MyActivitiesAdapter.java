@@ -33,9 +33,9 @@ public class MyActivitiesAdapter extends ArrayAdapter<MorningTea> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         morningTea = getItem(position);
 
-        if(convertView == null){
-            convertView =  ((Activity)getContext()).getLayoutInflater().inflate(R.layout.my_activites_timeline_layout,
-                    parent,false);
+        if (convertView == null) {
+            convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.my_activites_timeline_layout,
+                    parent, false);
         }
 
         Random random = new Random();

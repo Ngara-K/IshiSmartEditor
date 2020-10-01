@@ -7,16 +7,16 @@
     tools:context=".ui.Home">
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/home_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
-        android:id="@+id/home_title"
-        app:layout_constraintTop_toTopOf="@id/settings_btn"
+        android:text="@string/home"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/settings_btn"
         app:layout_constraintStart_toStartOf="parent"
-        android:textSize="@dimen/_14ssp"
-        android:text="@string/home"
-        android:textStyle="bold"/>
+        app:layout_constraintTop_toTopOf="@id/settings_btn" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/settings_btn"
@@ -30,9 +30,9 @@
         android:insetBottom="0dp"
         android:padding="0dp"
         app:icon="@drawable/ic_settings"
-        app:iconSize="@dimen/_15sdp"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
+        app:iconSize="@dimen/_15sdp"
         app:layout_constraintEnd_toStartOf="@id/add_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,44 +48,44 @@
         android:insetBottom="0dp"
         android:padding="0dp"
         app:icon="@drawable/ic_add"
-        app:iconSize="@dimen/_15sdp"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
+        app:iconSize="@dimen/_15sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/my_activities_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/my_activities_title"
-        app:layout_constraintStart_toStartOf="@id/home_title"
-        app:layout_constraintTop_toBottomOf="@id/settings_btn"
         android:layout_marginTop="@dimen/_10sdp"
-        android:textSize="@dimen/_12ssp"
         android:text="@string/my_activities"
-        android:textStyle="bold"/>
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/home_title"
+        app:layout_constraintTop_toBottomOf="@id/settings_btn" />
 
     <ListView
+        android:id="@+id/my_activities_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/my_activities_list"
         android:layout_marginTop="@dimen/_5sdp"
         android:scrollbars="none"
-        app:layout_constraintStart_toStartOf="@id/home_title"
         app:layout_constraintEnd_toEndOf="@id/add_btn"
+        app:layout_constraintStart_toStartOf="@id/home_title"
         app:layout_constraintTop_toBottomOf="@id/my_activities_title" />
 
     <LinearLayout
+        android:id="@+id/empty_activities_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/my_activities_title"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/empty_activities_layout">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/my_activities_title">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="@dimen/_65sdp"
@@ -96,9 +96,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:textSize="@dimen/_12ssp"
             android:text="Your activity history will be shown here"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

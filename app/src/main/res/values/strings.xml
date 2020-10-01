@@ -31,4 +31,7 @@
     <string name="post_deleted_successfully">Post deleted successfully ..</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="deleting_post">Deleting Post ..</string>
+    <string name="no_poster_image_selected">No Poster Image selected</string>
+    <string name="daily_poster">Daily Poster</string>
+    <string name="poster_summary">Poster Summary</string>
 </resources>

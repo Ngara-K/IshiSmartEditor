@@ -27,9 +27,9 @@ import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 public class MyProfile extends AppCompatActivity {
 
     private static String TAG = "Sign Activity";
+    private static boolean valid;
     private ActivityMyProfileBinding binding;
     private EditorProfile editorProfile;
-    private static boolean valid;
     private BasePopupView popupView;
 
     @Override
@@ -55,8 +55,7 @@ public class MyProfile extends AppCompatActivity {
                 if (!validation()) {
                     /*if validation fails*/
                     showPopUp("Check for errors");
-                }
-                else {
+                } else {
                     /*show loader...*/
                     showLoading();
 
@@ -78,48 +77,35 @@ public class MyProfile extends AppCompatActivity {
             }
         });
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        binding.backBtn.setOnClickListener(v -> onBackPressed());
     }
 
     /*getting profile*/
     private void getEditorProfile() {
         showLoading();
 
-        editorsCollection.document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull final Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    popupView.smartDismiss();
+        editorsCollection.document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                popupView.smartDismiss();
 
-                    if (task.getResult().exists()) {
-                        /*results ot pojo*/
-                        editorProfile = task.getResult().toObject(EditorProfile.class);
+                if (task.getResult().exists()) {
+                    /*results ot pojo*/
+                    editorProfile = task.getResult().toObject(EditorProfile.class);
 
-                        /*setters*/
-                        binding.firstNameInput.setText(editorProfile.getFirst_name());
-                        binding.lastNameInput.setText(editorProfile.getLast_name());
-                        binding.emailAddressInput.setText(editorProfile.getEmail());
-                        binding.phoneNumberInput.setText(Long.toString(editorProfile.getPhone_number()));
-                        binding.locationInput.setText(editorProfile.getLocation());
-                        binding.organizationInput.setText(editorProfile.getOrganization());
-                        binding.shortDescriptionInput.setText(editorProfile.getShort_description());
-                    }
+                    /*setters*/
+                    binding.firstNameInput.setText(editorProfile.getFirst_name());
+                    binding.lastNameInput.setText(editorProfile.getLast_name());
+                    binding.emailAddressInput.setText(editorProfile.getEmail());
+                    binding.phoneNumberInput.setText(Long.toString(editorProfile.getPhone_number()));
+                    binding.locationInput.setText(editorProfile.getLocation());
+                    binding.organizationInput.setText(editorProfile.getOrganization());
+                    binding.shortDescriptionInput.setText(editorProfile.getShort_description());
                 }
-                else {
-                    Log.d(TAG, "onComplete: " + task.getException());
-                    /*On Error*/
-                    popupView.dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showPopUp(task.getException().getMessage());
-                        }
-                    });
-                }
+            } else {
+                Log.d(TAG, "onComplete: " + task.getException());
+                /*On Error*/
+                popupView.dismissWith(() ->
+                        showPopUp(task.getException().getMessage()));
             }
         });
     }
@@ -129,41 +115,31 @@ public class MyProfile extends AppCompatActivity {
         if (binding.firstNameInput.getText().toString().isEmpty()) {
             binding.firstNameInput.setError("Required");
             valid = false;
-        }
-        else if (binding.firstNameInput.getText().toString().length() < 3) {
+        } else if (binding.firstNameInput.getText().toString().length() < 3) {
             binding.firstNameInput.setError("Invalid name");
             valid = false;
-        }
-        else if (binding.lastNameInput.getText().toString().isEmpty()) {
+        } else if (binding.lastNameInput.getText().toString().isEmpty()) {
             binding.lastNameInput.setError("Required");
             valid = false;
-        }
-        else if (binding.lastNameInput.getText().toString().length() < 3) {
+        } else if (binding.lastNameInput.getText().toString().length() < 3) {
             binding.lastNameInput.setError("Invalid name");
             valid = false;
-        }
-        
-        else if (binding.emailAddressInput.getText().toString().isEmpty()) {
+        } else if (binding.emailAddressInput.getText().toString().isEmpty()) {
             binding.emailAddressInput.setError("Required");
             valid = false;
-        }
-        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailAddressInput.getText().toString()).matches()) {
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailAddressInput.getText().toString()).matches()) {
             binding.emailAddressInput.setError("Invalid format");
             valid = false;
-        }
-        else if (binding.phoneNumberInput.getText().toString().isEmpty()) {
+        } else if (binding.phoneNumberInput.getText().toString().isEmpty()) {
             binding.phoneNumberInput.setError("Required");
             valid = false;
-        }
-        else if (binding.locationInput.getText().toString().isEmpty()) {
+        } else if (binding.locationInput.getText().toString().isEmpty()) {
             binding.locationInput.setError("Required");
             valid = false;
-        }
-        else if (binding.locationInput.getText().toString().length() < 8) {
+        } else if (binding.locationInput.getText().toString().length() < 8) {
             binding.locationInput.setError("Required lenght 8");
             valid = false;
-        }
-        else {
+        } else {
             valid = true;
         }
         return valid;
@@ -171,25 +147,17 @@ public class MyProfile extends AppCompatActivity {
 
     /*checking id document exits*/
     private void checkIfExist() {
-        editorsCollection.document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull final Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot snapshot = task.getResult();
+        editorsCollection.document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot snapshot = task.getResult();
 
-                    /*updating firebase profile first*/
-                    updateFirebaseProfile(snapshot);
-                }
-                else {
-                    Log.d(TAG, "onComplete: " + task.getException());
-                    /*On Error*/
-                    popupView.dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showPopUp(task.getException().getMessage());
-                        }
-                    });
-                }
+                /*updating firebase profile first*/
+                updateFirebaseProfile(snapshot);
+            } else {
+                Log.d(TAG, "onComplete: " + task.getException());
+                /*On Error*/
+                popupView.dismissWith(() ->
+                        showPopUp(task.getException().getMessage()));
             }
         });
     }
@@ -197,7 +165,7 @@ public class MyProfile extends AppCompatActivity {
     /*show error*/
     private void showPopUp(String string_notify) {
         new XPopup.Builder(MyProfile.this)
-                .asConfirm("IshiSmart.!", string_notify, null,
+                .asConfirm(getResources().getString(R.string.app_name), string_notify, null,
                         "Okay", null, null,
                         true, 0).show();
     }
@@ -211,26 +179,14 @@ public class MyProfile extends AppCompatActivity {
     private void setProfile() {
         Log.d(TAG, "setProfile: ");
 
-        editorsCollection.document(firebaseUser.getUid()).set(editorProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull final Task<Void> task) {
-                if (task.isSuccessful()) {
-                    popupView.dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showPopUp(getString(R.string.profile_updated));
-                        }
-                    });
-                }
-                else {
-                    /*show error message*/
-                    popupView.dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showPopUp(task.getException().getMessage());
-                        }
-                    });
-                }
+        editorsCollection.document(firebaseUser.getUid()).set(editorProfile).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                popupView.dismissWith(() ->
+                        showPopUp(getString(R.string.profile_updated)));
+            } else {
+                /*show error message*/
+                popupView.dismissWith(() ->
+                        showPopUp(task.getException().getMessage()));
             }
         });
     }
@@ -239,26 +195,14 @@ public class MyProfile extends AppCompatActivity {
     private void mergeProfile() {
         Log.d(TAG, "mergeProfile: ");
 
-        editorsCollection.document(firebaseUser.getUid()).set(editorProfile, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull final Task<Void> task) {
-                if (task.isSuccessful()) {
-                    popupView.dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showPopUp(getString(R.string.profile_updated));
-                        }
-                    });
-                }
-                else {
-                    /*show error message*/
-                    popupView.dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showPopUp(task.getException().getMessage());
-                        }
-                    });
-                }
+        editorsCollection.document(firebaseUser.getUid()).set(editorProfile, SetOptions.merge()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                popupView.dismissWith(() ->
+                        showPopUp(getString(R.string.profile_updated)));
+            } else {
+                /*show error message*/
+                popupView.dismissWith(() ->
+                        showPopUp(task.getException().getMessage()));
             }
         });
     }
@@ -269,34 +213,26 @@ public class MyProfile extends AppCompatActivity {
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                 .setDisplayName(
                         binding.firstNameInput.getText().toString()
-                        + " " + binding.lastNameInput.getText().toString()
+                                + " " + binding.lastNameInput.getText().toString()
                 ).build();
 
-        firebaseUser.updateProfile(profileChangeRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
+        firebaseUser.updateProfile(profileChangeRequest).addOnSuccessListener(aVoid -> {
+            /*
+             * Checking if document exists
+             * Merge document
+             * or
+             * Create document
+             * */
 
-                /*
-                 * Checking if document exists
-                 * Merge document
-                 * or
-                 * Create document
-                 * */
-
-                if (snapshot.exists()) {
-                    mergeProfile();
-                }
-                else {
-                    setProfile();
-                }
-
+            if (snapshot.exists()) {
+                mergeProfile();
+            } else {
+                setProfile();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure() returned: " + e.getMessage());
-                popupView.smartDismiss();
-            }
+
+        }).addOnFailureListener(e -> {
+            Log.d(TAG, "onFailure() returned: " + e.getMessage());
+            popupView.smartDismiss();
         });
     }
 }

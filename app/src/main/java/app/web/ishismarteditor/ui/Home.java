@@ -45,35 +45,24 @@ public class Home extends AppCompatActivity {
         setContentView(view);
 
         /*view adding bottom sheet*/
-        binding.addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.addBtn.setOnClickListener(v -> {
 
-                /*showing popup*/
-                new XPopup.Builder(Home.this).asCustom(
-                        new PostTypePopUp(Home.this)
-                ).show();
-            }
+            /*showing popup*/
+            new XPopup.Builder(Home.this).asCustom(
+                    new PostTypePopUp(Home.this)
+            ).show();
         });
 
-        Executors.BACKGROUND_EXECUTOR.execute(new Runnable() {
-            @Override
-            public void run() {
-                /*getting my activities list*/
-                getLiveActivities();
-            }
-        });
+        /*getting my activities list*/
+        Executors.BACKGROUND_EXECUTOR.execute(this::getLiveActivities);
 
         /*view full post*/
-        binding.myActivitiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemClick: " + teaList.get(position).getId());
+        binding.myActivitiesList.setOnItemClickListener((parent, view_, position, id) -> {
+            Log.d(TAG, "onItemClick: " + teaList.get(position).getId());
 
-                Intent intent = new Intent(Home.this, ViewPost.class);
-                intent.putExtra("id", teaList.get(position).getId());
-                startActivity(intent);
-            }
+            Intent intent = new Intent(Home.this, ViewPost.class);
+            intent.putExtra("id", teaList.get(position).getId());
+            startActivity(intent);
         });
 
         /**/
@@ -98,7 +87,7 @@ public class Home extends AppCompatActivity {
                 teaList.clear();
 
                 for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                    Log.d(TAG, "ID: " + queryDocumentSnapshot.getId() );
+                    Log.d(TAG, "ID: " + queryDocumentSnapshot.getId());
 
                     /*converting snapshot to pojo class*/
                     morningTea = queryDocumentSnapshot.toObject(MorningTea.class);
@@ -111,8 +100,7 @@ public class Home extends AppCompatActivity {
 
                 if (teaList.size() == 0) {
                     binding.emptyActivitiesLayout.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     binding.emptyActivitiesLayout.setVisibility(View.GONE);
                 }
             }

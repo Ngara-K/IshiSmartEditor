@@ -35,6 +35,7 @@ import io.noties.markwon.MarkwonConfiguration;
 import io.noties.markwon.MarkwonSpansFactory;
 import io.noties.markwon.RenderProps;
 import io.noties.markwon.SpanFactory;
+import io.noties.markwon.linkify.LinkifyPlugin;
 
 import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
@@ -42,11 +43,10 @@ import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 public class ViewPost extends AppCompatActivity {
 
     private static String TAG = "View Post Activity";
-    private ActivityViewPostBinding binding;
     private static long post_id;
-    private Markwon markwon;
-
     private static String document_id;
+    private ActivityViewPostBinding binding;
+    private Markwon markwon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,19 +56,13 @@ public class ViewPost extends AppCompatActivity {
         setContentView(view);
 
         /*get bundle from previous activity*/
-        if(getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null) {
             post_id = getIntent().getLongExtra("id", 0);
-        }
-        else {
+        } else {
             Log.d(TAG, "onCreate() returned: " + "ID NOT FOUND");
         }
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        binding.backBtn.setOnClickListener(v -> onBackPressed());
 
         /*getting post details*/
         getPostDetails();
@@ -77,49 +71,27 @@ public class ViewPost extends AppCompatActivity {
         markwon = Markwon.builder(ViewPost.this).usePlugin(new AbstractMarkwonPlugin() {
             @Override
             public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
-                builder.setFactory(Emphasis.class, new SpanFactory() {
-                    @Nullable
-                    @Override
-                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
-                        return new StyleSpan(Typeface.BOLD);
-                    }
-                }).setFactory(StrongEmphasis.class, new SpanFactory() {
-                    @Nullable
-                    @Override
-                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
-                        return new StyleSpan(Typeface.BOLD);
-                    }
-                });
+                builder.setFactory(Emphasis.class,
+                        (configuration, props) ->
+                                new StyleSpan(Typeface.BOLD)).setFactory(StrongEmphasis.class,
+                        (configuration, props) ->
+                                new StyleSpan(Typeface.BOLD));
             }
-        }).build();
+        }).usePlugin(LinkifyPlugin.create()).build();
 
         /*deleting post*/
-        binding.deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showConfirmationDialog();
-            }
-        });
+        binding.deleteBtn.setOnClickListener(v -> showConfirmationDialog());
 
         /*editing post*/
-        binding.editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.editBtn.setOnClickListener(v ->
                 new XPopup.Builder(ViewPost.this)
-                        .asCustom(new EditMorningTeaPopUp(ViewPost.this,
-                                document_id, binding.messageTitle.getText().toString(),
-                                binding.messageSummary.getText().toString(),
-                                binding.message.getText().toString())).show();
-            }
-        });
+                .asCustom(new EditMorningTeaPopUp(ViewPost.this,
+                        document_id, binding.messageTitle.getText().toString(),
+                        binding.messageSummary.getText().toString(),
+                        binding.message.getText().toString())).show());
 
         /*swipe to refresh post details*/
-        binding.refreshPostLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getPostDetails();
-            }
-        });
+        binding.refreshPostLayout.setOnRefreshListener(this::getPostDetails);
     }
 
     /*xpopup dialog*/
@@ -145,37 +117,29 @@ public class ViewPost extends AppCompatActivity {
     /*getting posts details*/
     private void getPostDetails() {
         morningTeaReference.whereEqualTo("id", post_id).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                .addOnCompleteListener(task -> {
 
-                        if (task.isSuccessful()) {
-                            /*dismiss freshing*/
-                            binding.refreshPostLayout.setRefreshing(false);
+                    if (task.isSuccessful()) {
+                        /*dismiss freshing*/
+                        binding.refreshPostLayout.setRefreshing(false);
 
-                            for (DocumentSnapshot doc: task.getResult().getDocuments()) {
-                                /*getting document id*/
-                                document_id = doc.getId();
-                                /*document to pojo*/
-                                MorningTea morningTea = doc.toObject(MorningTea.class);
-                                /*details setter*/
-                                setPostDetails(morningTea);
-                            }
+                        for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                            /*getting document id*/
+                            document_id = doc.getId();
+                            /*document to pojo*/
+                            MorningTea morningTea = doc.toObject(MorningTea.class);
+                            /*details setter*/
+                            setPostDetails(morningTea);
                         }
-
-                        else {
-                            binding.refreshPostLayout.setRefreshing(false);
-                            /*id not found*/
-                            showAlert(getResources().getString(R.string.something_went_wrong));
-                        }
+                    } else {
+                        binding.refreshPostLayout.setRefreshing(false);
+                        /*id not found*/
+                        showAlert(getResources().getString(R.string.something_went_wrong));
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure() returned: " + e.getMessage());
-                binding.refreshPostLayout.setRefreshing(false);
-            }
-        });
+                }).addOnFailureListener(e -> {
+                    Log.d(TAG, "onFailure() returned: " + e.getMessage());
+                    binding.refreshPostLayout.setRefreshing(false);
+                });
     }
 
     /*details setter*/
@@ -192,31 +156,21 @@ public class ViewPost extends AppCompatActivity {
     /*deleting post*/
     private void deletePost() {
         showLoading(getResources().getString(R.string.deleting_post));
-        morningTeaReference.document(document_id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    showAlert(getString(R.string.post_deleted_successfully));
+        morningTeaReference.document(document_id).delete().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                showAlert(getString(R.string.post_deleted_successfully));
 
-                    /*move task back*/
-                    dismissActivity();
-                }
-
-                else {
-                    /*on failure*/
-                    showAlert(getString(R.string.something_went_wrong));
-                }
+                /*move task back*/
+                dismissActivity();
+            } else {
+                /*on failure*/
+                showAlert(getString(R.string.something_went_wrong));
             }
         });
     }
 
     private void dismissActivity() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onBackPressed();
-            }
-        }, 2500);
+        new Handler().postDelayed(this::onBackPressed, 2500);
     }
 
     /*loading alerter*/

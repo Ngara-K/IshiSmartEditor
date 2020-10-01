@@ -16,7 +16,7 @@ public class MorningTea implements Serializable {
     private long time_mills;
     private PostDate post_date;
 
-    public MorningTea () {
+    public MorningTea() {
 
     }
 
@@ -97,14 +97,14 @@ public class MorningTea implements Serializable {
     }
 
 
-    public static class PostDate implements Serializable{
+    public static class PostDate implements Serializable {
 
         private String date;
         private String month;
         private String year;
         private Timestamp timestamp;
 
-        public PostDate () {
+        public PostDate() {
 
         }
 

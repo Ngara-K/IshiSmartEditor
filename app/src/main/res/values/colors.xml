@@ -13,6 +13,10 @@
 
     <color name="primaryBg">#F5F5F5</color>
 
+    <!--pix image picker-->
+    <color name="colorPrimaryPix">@color/colorPrimary</color>
+    <color name="colorPrimaryLightPix">@color/colorPrimaryDark</color>
+
     //custom colors
     <color name="white">#FFFFFF</color>
     <color name="ivory">#FFFFF0</color>

@@ -3,11 +3,8 @@ package app.web.ishismarteditor.auth;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -38,26 +35,16 @@ public class ResetPassword extends AppCompatActivity {
                 .dismissOnTouchOutside(false)
                 .asLoading();
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        binding.backBtn.setOnClickListener(v -> onBackPressed());
 
-        binding.sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.sendBtn.setOnClickListener(v -> {
 
-                if (binding.emailAddressInput.getText().toString().isEmpty()) {
-                    binding.emailAddressInput.setError("Email is Empty");
-                }
-                else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailAddressInput.getText().toString()).matches()) {
-                    binding.emailAddressInput.setError("Wrong email format");
-                }
-                else {
-                    sendResetInst();
-                }
+            if (binding.emailAddressInput.getText().toString().isEmpty()) {
+                binding.emailAddressInput.setError("Email is Empty");
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailAddressInput.getText().toString()).matches()) {
+                binding.emailAddressInput.setError("Wrong email format");
+            } else {
+                sendResetInst();
             }
         });
     }
@@ -66,31 +53,18 @@ public class ResetPassword extends AppCompatActivity {
         popupView.show();
 
         firebaseAuth.sendPasswordResetEmail(binding.emailAddressInput.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull final Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            popupView.dismissWith(new Runnable() {
-                                @Override
-                                public void run() {
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        popupView.dismissWith(() ->
+                                new XPopup.Builder(ResetPassword.this)
+                                .asConfirm("Successful..!", getString(R.string.reset_instruction_sent),
+                                        null, "Okay", null, null,
+                                        true, 0).show());
+                    } else {
 
-                                    new XPopup.Builder(ResetPassword.this)
-                                            .asConfirm("Successful..!", getString(R.string.reset_instruction_sent),
-                                                    null, "Okay", null, null,
-                                                    true, 0).show();
-                                }
-                            });
-                        }
-                        else {
+                        popupView.dismissWith(() ->
+                                showError(task.getException()));
 
-                            popupView.dismissWith(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showError(task.getException());
-                                }
-                            });
-
-                        }
                     }
                 });
     }
