@@ -54,7 +54,7 @@ public class MyProfile extends AppCompatActivity {
             public void onClick(View v) {
                 if (!validation()) {
                     /*if validation fails*/
-                    showPopUp("Check for errors");
+                    showPopUp(getResources().getString(R.string.check_for_errors));
                 } else {
                     /*show loader...*/
                     showLoading();

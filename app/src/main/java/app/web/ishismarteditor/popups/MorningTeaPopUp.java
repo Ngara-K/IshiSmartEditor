@@ -5,13 +5,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,10 +28,7 @@ import app.web.ishismarteditor.models.MorningTea;
 import app.web.ishismarteditor.models.MorningTea.PostDate;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
-import io.noties.markwon.MarkwonConfiguration;
 import io.noties.markwon.MarkwonSpansFactory;
-import io.noties.markwon.RenderProps;
-import io.noties.markwon.SpanFactory;
 import io.noties.markwon.editor.MarkwonEditor;
 import io.noties.markwon.editor.MarkwonEditorTextWatcher;
 import io.noties.markwon.linkify.LinkifyPlugin;
@@ -127,8 +120,9 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         submit_btn.setOnClickListener(v -> {
             if (!validation()) {
                 /*if validation fails*/
-                showMessage("Check for errors");
-            } else {
+                showMessage(getContext().getResources().getString(R.string.check_for_errors));
+            }
+            else {
                 /*show loader...*/
                 showLoading(getContext().getString(creating_tea_message));
 
@@ -186,7 +180,7 @@ public class MorningTeaPopUp extends FullScreenPopupView {
         morningTeaReference.document().set(morningTea).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 /*show message when successful */
-                dismissWith(() -> showMessage("Morning tea sent ..."));
+                dismissWith(() -> showMessage(getContext().getResources().getString(R.string.tea_sent)));
             } else {
                 /*show message when failed*/
                 showMessage(task.getException().getMessage());
