@@ -43,4 +43,5 @@
     <string name="daily_posters">Daily Posters</string>
     <string name="morning_tea_activity_history_will_be_shown_here">Morning tea activity history will be shown here</string>
     <string name="morning_tea">Morning Tea</string>
+    <string name="you_can_only_post_in_the_morning">You can only post in the morning ..</string>
 </resources>

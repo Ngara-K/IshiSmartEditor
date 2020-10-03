@@ -3,6 +3,7 @@ package app.web.ishismarteditor.popups;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.format.DateFormat;
 import android.text.style.StyleSpan;
 import android.util.Log;
 
@@ -12,6 +13,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 import com.tapadoo.alerter.Alerter;
 
@@ -139,10 +142,44 @@ public class MorningTeaPopUp extends FullScreenPopupView {
                         System.currentTimeMillis(), postDate
                 );
 
-                /*sending data*/
-                sendMorningTea();
+                /*getting firebase timestamp*/
+                getTimeFromServer();
             }
         });
+    }
+
+    /*getting time before posting*/
+    private void getTimeFromServer() {
+        /*getting server time*/
+        FirebaseFunctions.getInstance().getHttpsCallable("getTime")
+            .call()
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    long timestamp = (long) task.getResult().getData();
+
+//                            CharSequence test =  DateFormat.format("dd/MM/yyyy HH:mm:ss", timestamp);
+                    CharSequence charSequence =  DateFormat.format("HH", timestamp);
+
+                    if (Integer.parseInt(String.valueOf(charSequence)) > 10) {
+                        showDenied(getContext().getResources().getString(R.string.you_can_only_post_in_the_morning));
+                    }
+                    else {
+                        /*sending data*/
+                        sendMorningTea();
+                    }
+
+                } else {
+                    Log.d(TAG, "ERROR: ");
+                }
+            });
+    }
+
+    private void showDenied(String string) {
+        new XPopup.Builder(getContext())
+                .asConfirm(getResources().getString(R.string.app_name), string,
+                        null, "OKAY", () -> {
+                            /*dismiss dialog*/
+                        }, null, true, 0).show();
     }
 
     /*validating inputs*/
