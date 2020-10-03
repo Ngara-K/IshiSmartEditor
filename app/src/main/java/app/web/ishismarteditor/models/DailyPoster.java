@@ -91,6 +91,10 @@ public class DailyPoster implements Serializable {
         private String year;
         private Timestamp timestamp;
 
+        PostDate () {
+
+        }
+
         public PostDate(String date, String month, String year, Timestamp timestamp) {
             this.date = date;
             this.month = month;

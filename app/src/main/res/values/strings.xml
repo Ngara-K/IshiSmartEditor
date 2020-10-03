@@ -33,7 +33,7 @@
     <string name="deleting_post">Deleting Post ..</string>
     <string name="no_poster_image_selected">No Poster Image selected</string>
     <string name="daily_poster">Daily Poster</string>
-    <string name="poster_summary">Poster Summary (Optional) </string>
+    <string name="poster_summary">Poster Summary </string>
     <string name="poster_sent">Daily Poster sent …</string>
     <string name="uploading_poster">"Uploading Poster … "</string>
     <string name="check_for_errors">Check for errors</string>

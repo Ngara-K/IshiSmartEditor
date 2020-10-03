@@ -4,28 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.util.Executors;
 import com.lxj.xpopup.XPopup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import app.web.ishismarteditor.R;
-import app.web.ishismarteditor.adapters.MyActivitiesAdapter;
+import app.web.ishismarteditor.adapters.DailyPostersRecyclerAdapter;
+import app.web.ishismarteditor.adapters.MorningTeaRecyclerAdapter;
 import app.web.ishismarteditor.databinding.ActivityHomeBinding;
+import app.web.ishismarteditor.models.DailyPoster;
 import app.web.ishismarteditor.models.MorningTea;
 import app.web.ishismarteditor.popups.PostTypePopUp;
 
+import static app.web.ishismarteditor.utils.AppUtils.dailyPosterReference;
 import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 
 public class Home extends AppCompatActivity {
@@ -34,8 +32,11 @@ public class Home extends AppCompatActivity {
     private ActivityHomeBinding binding;
 
     private List<MorningTea> teaList = new ArrayList<>();
+    private List<DailyPoster> posterList = new ArrayList<>();
     private MorningTea morningTea;
-    private MyActivitiesAdapter activitiesAdapter;
+    private DailyPoster dailyPoster;
+    private MorningTeaRecyclerAdapter teaRecyclerAdapter;
+    private DailyPostersRecyclerAdapter postersRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,54 +57,73 @@ public class Home extends AppCompatActivity {
         /*getting my activities list*/
         Executors.BACKGROUND_EXECUTOR.execute(this::getLiveActivities);
 
-        /*view full post*/
-        binding.myActivitiesList.setOnItemClickListener((parent, view_, position, id) -> {
-            Log.d(TAG, "onItemClick: " + teaList.get(position).getId());
-
-            Intent intent = new Intent(Home.this, ViewPost.class);
-            intent.putExtra("id", teaList.get(position).getId());
-            startActivity(intent);
-        });
-
         /**/
-        binding.settingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Home.this, MyProfile.class));
-            }
-        });
+        binding.settingsBtn.setOnClickListener(v ->
+                startActivity(new Intent(Home.this, MyProfile.class)));
     }
 
     private void getLiveActivities() {
-        morningTeaReference.orderBy("post_date.timestamp", Query.Direction.DESCENDING).addSnapshotListener(Home.this, new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.w(TAG, "Listen failed.", error);
-                    return;
-                }
-
-                /*clear list first before adding data*/
-                teaList.clear();
-
-                for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
-                    Log.d(TAG, "ID: " + queryDocumentSnapshot.getId());
-
-                    /*converting snapshot to pojo class*/
-                    morningTea = queryDocumentSnapshot.toObject(MorningTea.class);
-                    teaList.add(morningTea);
-                }
-
-                /*setting adapter*/
-                activitiesAdapter = new MyActivitiesAdapter(Home.this, R.layout.my_activites_timeline_layout, teaList);
-                binding.myActivitiesList.setAdapter(activitiesAdapter);
-
-                if (teaList.size() == 0) {
-                    binding.emptyActivitiesLayout.setVisibility(View.VISIBLE);
-                } else {
-                    binding.emptyActivitiesLayout.setVisibility(View.GONE);
-                }
+        /*morning Tea*/
+        morningTeaReference.orderBy("post_date.timestamp", Query.Direction.DESCENDING).limit(10).addSnapshotListener(Home.this, (querySnapshot, error) -> {
+            if (error != null) {
+                Log.w(TAG, "Listen failed.", error);
+                return;
             }
+
+            /*clear list first before adding data*/
+            teaList.clear();
+
+            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                Log.d(TAG, "MORNING TEA: " + queryDocumentSnapshot.getId());
+
+                /*converting snapshot to pojo class*/
+                morningTea = queryDocumentSnapshot.toObject(MorningTea.class);
+                teaList.add(morningTea);
+            }
+
+            if (teaList.size() == 0) {
+                binding.emptyTeaActivitiesLayout.setVisibility(View.VISIBLE);
+            }
+            else {
+                binding.emptyTeaActivitiesLayout.setVisibility(View.GONE);
+            }
+
+            /*setting adapter*/
+            teaRecyclerAdapter = new MorningTeaRecyclerAdapter(teaList);
+            binding.morningTeaActivitiesList.setAdapter(teaRecyclerAdapter);
+            binding.morningTeaActivitiesList.addItemDecoration(new DividerItemDecoration(Home.this, DividerItemDecoration.VERTICAL));
+        });
+
+        /*daily posters*/
+        dailyPosterReference.orderBy("post_date.timestamp", Query.Direction.DESCENDING).limit(10).addSnapshotListener(Home.this, (querySnapshot, error) -> {
+            if (error != null) {
+                Log.w(TAG, "Listen failed.", error);
+                return;
+            }
+
+            /*clear list first before adding data*/
+            posterList.clear();
+
+            for (QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot) {
+                Log.d(TAG, "DAILY POSTER: " + queryDocumentSnapshot.getId());
+
+                /*converting snapshot to pojo class*/
+                dailyPoster = queryDocumentSnapshot.toObject(DailyPoster.class);
+                posterList.add(dailyPoster);
+
+            }
+
+            if (posterList.size() == 0) {
+                binding.emptyPostersActivitiesLayout.setVisibility(View.VISIBLE);
+            }
+            else {
+                binding.emptyPostersActivitiesLayout.setVisibility(View.GONE);
+            }
+
+            /*setting adapter*/
+            postersRecyclerAdapter = new DailyPostersRecyclerAdapter(posterList);
+            binding.dailyPostersActivitiesList.setAdapter(postersRecyclerAdapter);
+            binding.dailyPostersActivitiesList.addItemDecoration(new DividerItemDecoration(Home.this, DividerItemDecoration.VERTICAL));
         });
     }
 

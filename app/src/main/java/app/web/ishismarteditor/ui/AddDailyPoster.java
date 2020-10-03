@@ -111,11 +111,16 @@ public class AddDailyPoster extends AppCompatActivity {
 
         /*send daily poster*/
         binding.submitBtn.setOnClickListener(v -> {
-            showLoading(getResources().getString(R.string.uploading_poster));
-            /*upload image first and get download url*/
-            uploadImage(compressed_image_path);
+            /*requiring poster summary*/
+            if (binding.summaryInput.getText().toString().isEmpty()) {
+                binding.summaryInLayout.setError(getResources().getString(R.string.required));
+            }
+            else {
+                showLoading(getResources().getString(R.string.uploading_poster));
+                /*upload image first and get download url*/
+                uploadImage(compressed_image_path);
+            }
         });
-
 
         calendar = Calendar.getInstance();
 

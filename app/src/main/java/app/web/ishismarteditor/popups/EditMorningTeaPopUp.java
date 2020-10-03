@@ -6,14 +6,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,10 +23,7 @@ import java.util.concurrent.Executors;
 import app.web.ishismarteditor.R;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
-import io.noties.markwon.MarkwonConfiguration;
 import io.noties.markwon.MarkwonSpansFactory;
-import io.noties.markwon.RenderProps;
-import io.noties.markwon.SpanFactory;
 import io.noties.markwon.editor.MarkwonEditor;
 import io.noties.markwon.editor.MarkwonEditorTextWatcher;
 import io.noties.markwon.linkify.LinkifyPlugin;

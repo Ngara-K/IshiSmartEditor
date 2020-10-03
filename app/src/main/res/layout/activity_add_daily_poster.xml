@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:text="@string/daily_poster"
-            android:textSize="@dimen/_12ssp"
+            style="@style/TextAppearance.AppCompat.Subhead"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/back_btn"
             app:layout_constraintStart_toEndOf="@id/back_btn"
@@ -108,6 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/no_image_tv"
+            style="@style/TextAppearance.AppCompat.Subhead"
             app:layout_constraintTop_toBottomOf="@id/summary_inLayout"
             app:layout_constraintStart_toStartOf="@id/back_btn"
             app:layout_constraintEnd_toEndOf="@id/submit_btn"
@@ -143,13 +144,12 @@
             app:chipIcon="@drawable/ic_cancel_filled"
             app:chipIconTint="@color/colorPrimary"
             app:chipStrokeColor="@color/colorPrimary"
-            app:chipBackgroundColor="@color/picture_color_transparent_white"
+            app:chipBackgroundColor="@color/primaryBg"
             app:chipStrokeWidth="@dimen/_1sdp"
             android:text="Remove Image"
             app:layout_constraintTop_toTopOf="@id/poster_image"
             app:layout_constraintEnd_toEndOf="@id/poster_image"
             android:layout_margin="@dimen/_5sdp" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

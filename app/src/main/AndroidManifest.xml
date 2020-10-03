@@ -14,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialNoActionBar">
+        <activity android:name=".ui.ViewDailyPostersPost" />
         <activity android:name=".ui.AddDailyPoster" />
-        <activity android:name=".ui.ViewPost" />
+        <activity android:name=".ui.ViewMorningTeaPost" />
         <activity android:name=".ui.Home" />
         <activity android:name=".ui.MyProfile" />
         <activity android:name=".auth.ResetPassword" />

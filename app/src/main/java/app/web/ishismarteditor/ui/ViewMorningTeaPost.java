@@ -8,15 +8,9 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnCancelListener;
 import com.lxj.xpopup.interfaces.OnConfirmListener;
@@ -26,32 +20,29 @@ import org.commonmark.node.Emphasis;
 import org.commonmark.node.StrongEmphasis;
 
 import app.web.ishismarteditor.R;
-import app.web.ishismarteditor.databinding.ActivityViewPostBinding;
+import app.web.ishismarteditor.databinding.ActivityViewMorningTeaPostBinding;
 import app.web.ishismarteditor.models.MorningTea;
 import app.web.ishismarteditor.popups.EditMorningTeaPopUp;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
-import io.noties.markwon.MarkwonConfiguration;
 import io.noties.markwon.MarkwonSpansFactory;
-import io.noties.markwon.RenderProps;
-import io.noties.markwon.SpanFactory;
 import io.noties.markwon.linkify.LinkifyPlugin;
 
 import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 
-public class ViewPost extends AppCompatActivity {
+public class ViewMorningTeaPost extends AppCompatActivity {
 
-    private static String TAG = "View Post Activity";
+    private static String TAG = "View Morning Post Activity";
     private static long post_id;
     private static String document_id;
-    private ActivityViewPostBinding binding;
+    private ActivityViewMorningTeaPostBinding binding;
     private Markwon markwon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityViewPostBinding.inflate(getLayoutInflater());
+        binding = ActivityViewMorningTeaPostBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -68,7 +59,7 @@ public class ViewPost extends AppCompatActivity {
         getPostDetails();
 
         /*initialing markwon*/
-        markwon = Markwon.builder(ViewPost.this).usePlugin(new AbstractMarkwonPlugin() {
+        markwon = Markwon.builder(ViewMorningTeaPost.this).usePlugin(new AbstractMarkwonPlugin() {
             @Override
             public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
                 builder.setFactory(Emphasis.class,
@@ -84,8 +75,8 @@ public class ViewPost extends AppCompatActivity {
 
         /*editing post*/
         binding.editBtn.setOnClickListener(v ->
-                new XPopup.Builder(ViewPost.this)
-                .asCustom(new EditMorningTeaPopUp(ViewPost.this,
+                new XPopup.Builder(ViewMorningTeaPost.this)
+                .asCustom(new EditMorningTeaPopUp(ViewMorningTeaPost.this,
                         document_id, binding.messageTitle.getText().toString(),
                         binding.messageSummary.getText().toString(),
                         binding.message.getText().toString())).show());
@@ -96,7 +87,7 @@ public class ViewPost extends AppCompatActivity {
 
     /*xpopup dialog*/
     private void showConfirmationDialog() {
-        new XPopup.Builder(ViewPost.this)
+        new XPopup.Builder(ViewMorningTeaPost.this)
                 .asConfirm(getResources().getString(R.string.app_name),
                         "You are about to delete this post \nContinue ?",
                         "NO", "YES",
@@ -175,7 +166,7 @@ public class ViewPost extends AppCompatActivity {
 
     /*loading alerter*/
     private void showLoading(String message) {
-        Alerter.create(ViewPost.this)
+        Alerter.create(ViewMorningTeaPost.this)
                 .setTitle(getResources().getString(R.string.please_wait))
                 .setText(message)
                 .disableOutsideTouch()
@@ -186,7 +177,7 @@ public class ViewPost extends AppCompatActivity {
 
     /*alerter*/
     private void showAlert(String message) {
-        Alerter.create(ViewPost.this)
+        Alerter.create(ViewMorningTeaPost.this)
                 .setTitle(getResources().getString(R.string.app_name))
                 .hideIcon()
                 .setText(message)
