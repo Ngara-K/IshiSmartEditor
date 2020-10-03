@@ -57,9 +57,9 @@ public class ResetPassword extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         popupView.dismissWith(() ->
                                 new XPopup.Builder(ResetPassword.this)
-                                .asConfirm("Successful..!", getString(R.string.reset_instruction_sent),
-                                        null, "Okay", null, null,
-                                        true, 0).show());
+                                        .asConfirm("Successful..!", getString(R.string.reset_instruction_sent),
+                                                null, "Okay", null, null,
+                                                true, 0).show());
                     } else {
 
                         popupView.dismissWith(() ->

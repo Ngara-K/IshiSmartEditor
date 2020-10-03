@@ -76,19 +76,16 @@ public class Home extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
-        if(timeOfDay >= 0 && timeOfDay < 12){
-        /*its morning*/
+        if (timeOfDay >= 0 && timeOfDay < 12) {
+            /*its morning*/
             binding.greetings.setText("Good Morning");
-        }
-        else if(timeOfDay >= 12 && timeOfDay < 16){
+        } else if (timeOfDay >= 12 && timeOfDay < 16) {
             /*its afternoon*/
             binding.greetings.setText("Good Afternoon");
-        }
-        else if(timeOfDay >= 16 && timeOfDay < 21){
+        } else if (timeOfDay >= 16 && timeOfDay < 21) {
             /*its evening*/
             binding.greetings.setText("Good Evening");
-        }
-        else if(timeOfDay >= 21 && timeOfDay < 24){
+        } else if (timeOfDay >= 21 && timeOfDay < 24) {
             /*its night*/
             binding.greetings.setText("Good Night");
         }
@@ -115,8 +112,7 @@ public class Home extends AppCompatActivity {
 
             if (teaList.size() == 0) {
                 binding.emptyTeaActivitiesLayout.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 binding.emptyTeaActivitiesLayout.setVisibility(View.GONE);
             }
 
@@ -147,8 +143,7 @@ public class Home extends AppCompatActivity {
 
             if (posterList.size() == 0) {
                 binding.emptyPostersActivitiesLayout.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 binding.emptyPostersActivitiesLayout.setVisibility(View.GONE);
             }
 

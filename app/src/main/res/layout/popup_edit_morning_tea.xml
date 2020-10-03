@@ -42,11 +42,11 @@
             app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:text="Edit Morning Tea"
-            style="@style/TextAppearance.AppCompat.Subhead"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/back_btn"
             app:layout_constraintStart_toEndOf="@id/back_btn"

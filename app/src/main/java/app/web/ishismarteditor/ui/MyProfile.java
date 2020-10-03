@@ -14,7 +14,8 @@ import app.web.ishismarteditor.databinding.ActivityMyProfileBinding;
 public class MyProfile extends AppCompatActivity {
 
     private static String TAG = "My Profile Activity";
-    private ActivityMyProfileBinding binding;;
+    private ActivityMyProfileBinding binding;
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

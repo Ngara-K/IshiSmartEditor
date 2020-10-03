@@ -36,7 +36,7 @@ public class PostTypePopUp extends BottomPopupView {
         morning_tea.setOnClickListener(v ->
                 dismissWith(() ->
                         new XPopup.Builder(getContext()).hasStatusBar(true).hasNavigationBar(true)
-                .asCustom(new MorningTeaPopUp(getContext())).show()));
+                                .asCustom(new MorningTeaPopUp(getContext())).show()));
 
         daily_poster.setOnClickListener(v -> {
             getContext().startActivity(new Intent(getContext(), AddDailyPoster.class));

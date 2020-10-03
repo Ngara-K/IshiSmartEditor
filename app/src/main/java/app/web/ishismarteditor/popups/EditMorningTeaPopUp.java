@@ -88,7 +88,7 @@ public class EditMorningTeaPopUp extends FullScreenPopupView {
             public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
                 builder.setFactory(Emphasis.class,
                         (configuration, props) ->
-                        new StyleSpan(Typeface.BOLD)).setFactory(StrongEmphasis.class,
+                                new StyleSpan(Typeface.BOLD)).setFactory(StrongEmphasis.class,
                         (configuration, props) ->
                                 new StyleSpan(Typeface.BOLD));
             }

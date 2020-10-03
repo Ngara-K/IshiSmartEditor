@@ -38,26 +38,26 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/my_profile_title"
+        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:text="My Profile"
-        style="@style/TextAppearance.AppCompat.Subhead"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/back_btn"
         app:layout_constraintStart_toEndOf="@id/back_btn"
         app:layout_constraintTop_toTopOf="@id/back_btn" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/user_icon"
         android:layout_width="@dimen/_75sdp"
         android:layout_height="@dimen/_75sdp"
         android:layout_margin="@dimen/_5sdp"
-        android:id="@+id/user_icon"
-        app:srcCompat="@drawable/ic_user"
-        app:layout_constraintTop_toBottomOf="@id/back_btn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/back_btn"
+        app:srcCompat="@drawable/ic_user" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/settings_btn"
@@ -72,38 +72,38 @@
         app:icon="@drawable/ic_settings"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
-        app:layout_constraintEnd_toEndOf="@id/user_icon"
         app:layout_constraintBottom_toBottomOf="@id/user_icon"
+        app:layout_constraintEnd_toEndOf="@id/user_icon"
         app:layout_constraintTop_toBottomOf="@id/user_icon"
         app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
     <com.google.android.material.chip.Chip
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_25sdp"
+        android:text="More features to come ..."
+        app:chipBackgroundColor="@color/primaryBg"
         app:chipIcon="@drawable/ic_add_check"
         app:chipIconTint="@color/colorPrimary"
         app:chipStrokeColor="@color/colorPrimary"
-        app:chipBackgroundColor="@color/primaryBg"
         app:chipStrokeWidth="@dimen/_1sdp"
-        android:text="More features to come ..."
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/settings_btn"
-        android:layout_margin="@dimen/_25sdp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_btn" />
 
     <com.google.android.material.chip.Chip
+        android:id="@+id/sign_out_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sign_out_btn"
+        android:layout_margin="@dimen/_25sdp"
+        android:text="Sign Out"
+        app:chipBackgroundColor="@color/primaryBg"
         app:chipIcon="@drawable/ic_remove_circle"
         app:chipIconTint="@color/colorPrimary"
         app:chipStrokeColor="@color/colorPrimary"
-        app:chipBackgroundColor="@color/primaryBg"
         app:chipStrokeWidth="@dimen/_1sdp"
-        android:text="Sign Out"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="@dimen/_25sdp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

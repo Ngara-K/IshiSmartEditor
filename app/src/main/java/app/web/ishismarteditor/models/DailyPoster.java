@@ -15,7 +15,7 @@ public class DailyPoster implements Serializable {
     private long time_mills;
     private PostDate post_date;
 
-    DailyPoster () {
+    DailyPoster() {
 
     }
 
@@ -85,13 +85,13 @@ public class DailyPoster implements Serializable {
         this.poster_image_url = poster_image_url;
     }
 
-    public static class PostDate implements Serializable{
+    public static class PostDate implements Serializable {
         private String date;
         private String month;
         private String year;
         private Timestamp timestamp;
 
-        PostDate () {
+        PostDate() {
 
         }
 

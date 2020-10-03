@@ -5,8 +5,8 @@
     <color name="colorPrimaryLight">#FFECB3</color>
     <color name="colorAccent">#FF9800</color>
 
-<!--    <color name="colorPrimaryText">#F5F5F5</color>-->
-<!--    <color name="colorSecondaryText">#BDBDBD</color>-->
+    <!--    <color name="colorPrimaryText">#F5F5F5</color>-->
+    <!--    <color name="colorSecondaryText">#BDBDBD</color>-->
 
     <color name="colorIcons">#F5F5F5</color>
     <color name="colorDivider">#BDBDBD</color>

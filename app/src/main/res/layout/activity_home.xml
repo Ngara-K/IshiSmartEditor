@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,22 +28,22 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/user_icon"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:elevation="@dimen/_10sdp"
-                android:id="@+id/user_icon"
-                app:srcCompat="@drawable/ic_user"
                 android:layout_margin="@dimen/_10sdp"
+                android:elevation="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:srcCompat="@drawable/ic_user" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/home_title"
+                style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:text="@string/home"
-                style="@style/TextAppearance.AppCompat.Title"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/user_icon"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,36 +51,36 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/greetings"
+                style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
                 android:textStyle="bold"
-                style="@style/TextAppearance.AppCompat.Title"
-                app:layout_constraintStart_toStartOf="@id/home_title"
                 app:layout_constraintEnd_toEndOf="@id/user_icon"
+                app:layout_constraintStart_toStartOf="@id/home_title"
                 app:layout_constraintTop_toBottomOf="@id/user_icon" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/user_display_name"
+                style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
                 android:textStyle="bold"
-                style="@style/TextAppearance.AppCompat.Subhead"
-                app:layout_constraintStart_toStartOf="@id/home_title"
                 app:layout_constraintEnd_toEndOf="@id/user_icon"
+                app:layout_constraintStart_toStartOf="@id/home_title"
                 app:layout_constraintTop_toBottomOf="@id/greetings" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/info_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/info_card"
-                app:layout_constraintTop_toBottomOf="@id/user_display_name"
-                app:layout_constraintStart_toStartOf="@id/home_title"
-                app:layout_constraintEnd_toEndOf="@id/user_icon"
-                app:cardUseCompatPadding="true"
                 app:cardElevation="@dimen/_5sdp"
-                app:contentPadding="@dimen/_5sdp">
+                app:cardUseCompatPadding="true"
+                app:contentPadding="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="@id/user_icon"
+                app:layout_constraintStart_toStartOf="@id/home_title"
+                app:layout_constraintTop_toBottomOf="@id/user_display_name">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -90,12 +89,12 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextAppearance.AppCompat.Subhead"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/app_name"
-                        android:textStyle="bold"
-                        style="@style/TextAppearance.AppCompat.Subhead" />
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -108,11 +107,11 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/my_activities_title"
+                style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/my_activities"
-                style="@style/TextAppearance.AppCompat.Title"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/home_title"
                 app:layout_constraintTop_toBottomOf="@id/info_card" />
@@ -120,8 +119,8 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="@id/user_icon"
                 app:layout_constraintStart_toStartOf="@id/home_title"
                 app:layout_constraintTop_toBottomOf="@id/my_activities_title">
@@ -129,8 +128,8 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_12ssp"
                     android:text="@string/morning_tea"
+                    android:textSize="@dimen/_12ssp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -138,8 +137,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_150sdp"
                     android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="@dimen/_65sdp"
@@ -160,17 +159,17 @@
                     android:id="@+id/morning_tea_activities_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:scrollbars="none" />
+                    android:nestedScrollingEnabled="false"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:textSize="@dimen/_12ssp"
                     android:text="@string/daily_posters"
+                    android:textSize="@dimen/_12ssp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -200,10 +199,10 @@
                     android:id="@+id/daily_posters_activities_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:scrollbars="none" />
+                    android:nestedScrollingEnabled="false"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
 
@@ -216,34 +215,34 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/add_poster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/add_poster"
+            android:layout_margin="@dimen/_5sdp"
+            android:text="New Poster"
+            app:chipBackgroundColor="@color/primaryBg"
             app:chipIcon="@drawable/ic_add"
             app:chipIconTint="@color/colorPrimary"
             app:chipStrokeColor="@color/colorPrimary"
-            app:chipBackgroundColor="@color/primaryBg"
             app:chipStrokeWidth="@dimen/_1sdp"
-            android:text="New Poster"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/add_tea"
-            android:layout_margin="@dimen/_5sdp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/add_tea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/add_tea"
+            android:layout_margin="@dimen/_5sdp"
+            android:text="New Article"
+            app:chipBackgroundColor="@color/primaryBg"
             app:chipIcon="@drawable/ic_add"
             app:chipIconTint="@color/colorPrimary"
             app:chipStrokeColor="@color/colorPrimary"
-            app:chipBackgroundColor="@color/primaryBg"
             app:chipStrokeWidth="@dimen/_1sdp"
-            android:text="New Article"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/add_poster"
-            android:layout_margin="@dimen/_5sdp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
