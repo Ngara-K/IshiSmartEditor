@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialNoActionBar">
+        <activity android:name=".ui.EditProfile" />
         <activity android:name=".ui.ViewDailyPostersPost" />
         <activity android:name=".ui.AddDailyPoster" />
         <activity android:name=".ui.ViewMorningTeaPost" />

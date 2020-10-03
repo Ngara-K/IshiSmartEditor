@@ -9,7 +9,7 @@
     <string name="reset_instructions">Please fill your registered Email Address. We will send you password reset instructions</string>
     <string name="reset">RESET</string>
     <string name="reset_instruction_sent">Password reset instructions has been sent to your email</string>
-    <string name="my_profile">My Profile</string>
+    <string name="edit_profile">Edit Profile</string>
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="phone_number">Phone Number</string>
@@ -38,4 +38,9 @@
     <string name="uploading_poster">"Uploading Poster … "</string>
     <string name="check_for_errors">Check for errors</string>
     <string name="tea_sent">Morning tea sent …</string>
+    <string name="congrats_you_are_an_editor">Congrats you are an Editor, you can post your daily motivation posters and articles. Articles are only posted in the morning and motivation posters are posted at any time of the day</string>
+    <string name="posters_activity_history_will_be_shown_here">Posters activity history will be shown here</string>
+    <string name="daily_posters">Daily Posters</string>
+    <string name="morning_tea_activity_history_will_be_shown_here">Morning tea activity history will be shown here</string>
+    <string name="morning_tea">Morning Tea</string>
 </resources>

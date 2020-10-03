@@ -13,11 +13,22 @@
         android:paddingBottom="@dimen/_10ssp">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/top_view"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_12sdp"
+            android:layout_margin="@dimen/_5sdp"
+            android:enabled="false"
+            app:cornerRadius="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/back_btn"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="@dimen/_45sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_margin="@dimen/_10sdp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_margin="@dimen/_5sdp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -27,15 +38,26 @@
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_view"
             app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="Morning Tea"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/back_btn"
+            app:layout_constraintStart_toEndOf="@id/back_btn"
+            app:layout_constraintTop_toTopOf="@id/back_btn" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/submit_btn"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="@dimen/_45sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_margin="@dimen/_10sdp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_margin="@dimen/_5sdp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -45,7 +67,7 @@
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_view"
             app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
         <LinearLayout
@@ -55,22 +77,6 @@
             app:layout_constraintEnd_toEndOf="@id/submit_btn"
             app:layout_constraintStart_toStartOf="@id/back_btn"
             app:layout_constraintTop_toBottomOf="@id/back_btn">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/top_view"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_10sdp"
-                android:enabled="false"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:padding="0dp"
-                app:shapeAppearanceOverlay="@style/OverlayButtonCircle"
-                app:strokeColor="@color/colorPrimary" />
 
             <!--Message Title-->
             <androidx.appcompat.widget.AppCompatTextView

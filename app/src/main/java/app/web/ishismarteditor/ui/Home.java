@@ -14,6 +14,7 @@ import com.google.firebase.firestore.util.Executors;
 import com.lxj.xpopup.XPopup;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import app.web.ishismarteditor.adapters.DailyPostersRecyclerAdapter;
@@ -21,9 +22,10 @@ import app.web.ishismarteditor.adapters.MorningTeaRecyclerAdapter;
 import app.web.ishismarteditor.databinding.ActivityHomeBinding;
 import app.web.ishismarteditor.models.DailyPoster;
 import app.web.ishismarteditor.models.MorningTea;
-import app.web.ishismarteditor.popups.PostTypePopUp;
+import app.web.ishismarteditor.popups.MorningTeaPopUp;
 
 import static app.web.ishismarteditor.utils.AppUtils.dailyPosterReference;
+import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 
 public class Home extends AppCompatActivity {
@@ -45,21 +47,51 @@ public class Home extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        /*view adding bottom sheet*/
-        binding.addBtn.setOnClickListener(v -> {
+        /*Adding ... */
+        binding.addPoster.setOnClickListener(v -> {
+            startActivity(new Intent(Home.this, AddDailyPoster.class));
+        });
 
-            /*showing popup*/
-            new XPopup.Builder(Home.this).asCustom(
-                    new PostTypePopUp(Home.this)
-            ).show();
+        /*Adding ... */
+        binding.addTea.setOnClickListener(v -> {
+            new XPopup.Builder(Home.this).hasStatusBar(true).hasNavigationBar(true)
+                    .asCustom(new MorningTeaPopUp(Home.this)).show();
         });
 
         /*getting my activities list*/
         Executors.BACKGROUND_EXECUTOR.execute(this::getLiveActivities);
 
+        binding.userDisplayName.setText(firebaseUser.getDisplayName());
+
         /**/
-        binding.settingsBtn.setOnClickListener(v ->
+        binding.userIcon.setOnClickListener(v ->
                 startActivity(new Intent(Home.this, MyProfile.class)));
+
+        /*greeting user*/
+        greetingUser();
+    }
+
+    /*greeting user*/
+    private void greetingUser() {
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+        if(timeOfDay >= 0 && timeOfDay < 12){
+        /*its morning*/
+            binding.greetings.setText("Good Morning");
+        }
+        else if(timeOfDay >= 12 && timeOfDay < 16){
+            /*its afternoon*/
+            binding.greetings.setText("Good Afternoon");
+        }
+        else if(timeOfDay >= 16 && timeOfDay < 21){
+            /*its evening*/
+            binding.greetings.setText("Good Evening");
+        }
+        else if(timeOfDay >= 21 && timeOfDay < 24){
+            /*its night*/
+            binding.greetings.setText("Good Night");
+        }
     }
 
     private void getLiveActivities() {
