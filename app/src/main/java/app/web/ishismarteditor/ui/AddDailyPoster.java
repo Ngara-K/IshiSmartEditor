@@ -89,9 +89,7 @@ public class AddDailyPoster extends AppCompatActivity {
             binding.pickImage.setVisibility(View.GONE);
             binding.noImageTv.setVisibility(View.GONE);
             binding.submitBtn.setEnabled(true);
-        }
-
-        else {
+        } else {
             binding.pickImage.setVisibility(View.VISIBLE);
             binding.noImageTv.setVisibility(View.VISIBLE);
             binding.submitBtn.setEnabled(false);
@@ -114,8 +112,7 @@ public class AddDailyPoster extends AppCompatActivity {
             /*requiring poster summary*/
             if (binding.summaryInput.getText().toString().isEmpty()) {
                 binding.summaryInLayout.setError(getResources().getString(R.string.required));
-            }
-            else {
+            } else {
                 showLoading(getResources().getString(R.string.uploading_poster));
                 /*upload image first and get download url*/
                 uploadImage(compressed_image_path);
@@ -270,11 +267,10 @@ public class AddDailyPoster extends AppCompatActivity {
                         binding.summaryInput.getText().toString(),
                         poster_image_url, firebaseUser.getUid(),
                         editorsCollection.document(firebaseUser.getUid()),
-                        System.currentTimeMillis(), postDate );
+                        System.currentTimeMillis(), postDate);
 
                 sendDailyPoster(dailyPoster);
-            }
-            else {
+            } else {
                 /*failed*/
                 Log.d(TAG, "onComplete() returned: " + task12.getException().getMessage());
             }

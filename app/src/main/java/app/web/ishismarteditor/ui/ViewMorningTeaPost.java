@@ -76,10 +76,10 @@ public class ViewMorningTeaPost extends AppCompatActivity {
         /*editing post*/
         binding.editBtn.setOnClickListener(v ->
                 new XPopup.Builder(ViewMorningTeaPost.this)
-                .asCustom(new EditMorningTeaPopUp(ViewMorningTeaPost.this,
-                        document_id, binding.messageTitle.getText().toString(),
-                        binding.messageSummary.getText().toString(),
-                        binding.message.getText().toString())).show());
+                        .asCustom(new EditMorningTeaPopUp(ViewMorningTeaPost.this,
+                                document_id, binding.messageTitle.getText().toString(),
+                                binding.messageSummary.getText().toString(),
+                                binding.message.getText().toString())).show());
 
         /*swipe to refresh post details*/
         binding.refreshPostLayout.setOnRefreshListener(this::getPostDetails);
@@ -128,9 +128,9 @@ public class ViewMorningTeaPost extends AppCompatActivity {
                         showAlert(getResources().getString(R.string.something_went_wrong));
                     }
                 }).addOnFailureListener(e -> {
-                    Log.d(TAG, "onFailure() returned: " + e.getMessage());
-                    binding.refreshPostLayout.setRefreshing(false);
-                });
+            Log.d(TAG, "onFailure() returned: " + e.getMessage());
+            binding.refreshPostLayout.setRefreshing(false);
+        });
     }
 
     /*details setter*/

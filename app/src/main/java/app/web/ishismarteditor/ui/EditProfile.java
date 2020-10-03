@@ -21,10 +21,9 @@ import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 
 public class EditProfile extends AppCompatActivity {
 
-    private ActivityEditProfileBinding binding;
-
     private static String TAG = "Edit Profile Activity";
     private static boolean valid;
+    private ActivityEditProfileBinding binding;
     private EditorProfile editorProfile;
     private BasePopupView popupView;
 

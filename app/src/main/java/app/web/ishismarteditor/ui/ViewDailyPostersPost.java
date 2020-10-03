@@ -35,10 +35,10 @@ import static app.web.ishismarteditor.utils.AppUtils.firebaseUser;
 
 public class ViewDailyPostersPost extends AppCompatActivity {
 
-    private ActivityViewDailyPostersPostBinding binding;
     private static String TAG = "View Daily Poster Activity";
     private static long post_id;
     private static String document_id;
+    private ActivityViewDailyPostersPostBinding binding;
     private DailyPoster dailyPoster;
     private Markwon markwon;
 
@@ -96,15 +96,14 @@ public class ViewDailyPostersPost extends AppCompatActivity {
     private void editPostSummary(String text) {
         if (text.isEmpty()) {
             showAlert(getResources().getString(R.string.required));
-        }
-        else {
+        } else {
             dailyPosterReference.document(document_id).update("poster_summary", text)
-                .addOnSuccessListener(aVoid -> {
-                    showAlert("Edited Successfully");
-                }).addOnFailureListener(e -> {
-                    Log.d(TAG, "editPostSummary() returned: " + e.getMessage());
-                    showAlert(getResources().getString(R.string.something_went_wrong));
-                });
+                    .addOnSuccessListener(aVoid -> {
+                        showAlert("Edited Successfully");
+                    }).addOnFailureListener(e -> {
+                Log.d(TAG, "editPostSummary() returned: " + e.getMessage());
+                showAlert(getResources().getString(R.string.something_went_wrong));
+            });
         }
     }
 
@@ -136,16 +135,16 @@ public class ViewDailyPostersPost extends AppCompatActivity {
         StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(dailyPoster.getPoster_image_url());
 
         reference.delete().addOnSuccessListener(aVoid ->
-            dailyPosterReference.document(document_id).delete().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    showAlert(getString(R.string.post_deleted_successfully));
-                    /*move task back*/
-                    dismissActivity();
-                } else {
-                    /*on failure*/
-                    showAlert(getString(R.string.something_went_wrong));
-                }
-        })).addOnFailureListener(e -> {
+                dailyPosterReference.document(document_id).delete().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        showAlert(getString(R.string.post_deleted_successfully));
+                        /*move task back*/
+                        dismissActivity();
+                    } else {
+                        /*on failure*/
+                        showAlert(getString(R.string.something_went_wrong));
+                    }
+                })).addOnFailureListener(e -> {
             /*on failure*/
             showAlert(getResources().getString(R.string.something_went_wrong));
         });

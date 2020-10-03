@@ -124,8 +124,7 @@ public class MorningTeaPopUp extends FullScreenPopupView {
             if (!validation()) {
                 /*if validation fails*/
                 showMessage(getContext().getResources().getString(R.string.check_for_errors));
-            }
-            else {
+            } else {
                 /*show loader...*/
                 showLoading(getContext().getString(creating_tea_message));
 
@@ -152,26 +151,25 @@ public class MorningTeaPopUp extends FullScreenPopupView {
     private void getTimeFromServer() {
         /*getting server time*/
         FirebaseFunctions.getInstance().getHttpsCallable("getTime")
-            .call()
-            .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    long timestamp = (long) task.getResult().getData();
+                .call()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        long timestamp = (long) task.getResult().getData();
 
 //                            CharSequence test =  DateFormat.format("dd/MM/yyyy HH:mm:ss", timestamp);
-                    CharSequence charSequence =  DateFormat.format("HH", timestamp);
+                        CharSequence charSequence = DateFormat.format("HH", timestamp);
 
-                    if (Integer.parseInt(String.valueOf(charSequence)) > 10) {
-                        showDenied(getContext().getResources().getString(R.string.you_can_only_post_in_the_morning));
-                    }
-                    else {
-                        /*sending data*/
-                        sendMorningTea();
-                    }
+                        if (Integer.parseInt(String.valueOf(charSequence)) > 10) {
+                            showDenied(getContext().getResources().getString(R.string.you_can_only_post_in_the_morning));
+                        } else {
+                            /*sending data*/
+                            sendMorningTea();
+                        }
 
-                } else {
-                    Log.d(TAG, "ERROR: ");
-                }
-            });
+                    } else {
+                        Log.d(TAG, "ERROR: ");
+                    }
+                });
     }
 
     private void showDenied(String string) {

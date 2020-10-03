@@ -62,24 +62,24 @@ public class SignIn extends AppCompatActivity {
 
         firebaseAuth.signInWithEmailAndPassword(binding.emailAddressInput.getText().toString(),
                 binding.passwordInput.getText().toString()).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        firebaseUser = firebaseAuth.getCurrentUser();
-                        if (firebaseUser != null) {
-                            startActivity(new Intent(SignIn.this, Home.class));
-                            finish();
-                        } else {
+            if (task.isSuccessful()) {
+                firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null) {
+                    startActivity(new Intent(SignIn.this, Home.class));
+                    finish();
+                } else {
 
-                            new XPopup.Builder(SignIn.this)
-                                    .asConfirm("Oops..!", "An error occurred", null,
-                                            "Okay", null, null,
-                                            true, 0).show();
-                        }
-                    } else {
+                    new XPopup.Builder(SignIn.this)
+                            .asConfirm("Oops..!", "An error occurred", null,
+                                    "Okay", null, null,
+                                    true, 0).show();
+                }
+            } else {
 
-                        popupView.dismissWith(() -> showError(task.getException()));
+                popupView.dismissWith(() -> showError(task.getException()));
 
-                    }
-                });
+            }
+        });
     }
 
     private void showError(Exception exception) {

@@ -34,7 +34,7 @@ public class DailyPostersRecyclerAdapter extends RecyclerView.Adapter<DailyPoste
     @NonNull
     @Override
     public DailyPostersRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_activities_daily_posters_layout, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_activities_daily_posters_layout, parent, false);
         return new ViewHolder(view);
     }
 
@@ -49,7 +49,7 @@ public class DailyPostersRecyclerAdapter extends RecyclerView.Adapter<DailyPoste
             holder.poster_date.setText(
                     dailyPosterList.get(position).getPost_date().getDate() + " "
                             + dailyPosterList.get(position).getPost_date().getMonth() + " "
-                            +dailyPosterList.get(position).getPost_date().getYear());
+                            + dailyPosterList.get(position).getPost_date().getYear());
 
             holder.poster_summary.setText(dailyPosterList.get(position).getPoster_summary());
             holder.post_time.setDate(dailyPosterList.get(position).getPost_date().getTimestamp().toDate());
@@ -74,7 +74,7 @@ public class DailyPostersRecyclerAdapter extends RecyclerView.Adapter<DailyPoste
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         View view;
-        TextView poster_date ;
+        TextView poster_date;
         TextView poster_summary;
         ImageView poster_image;
         TimeAgoTextView post_time;

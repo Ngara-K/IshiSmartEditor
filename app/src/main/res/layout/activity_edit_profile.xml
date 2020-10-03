@@ -38,12 +38,12 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/my_profile_title"
+        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:text="@string/edit_profile"
-        style="@style/TextAppearance.AppCompat.Subhead"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/back_btn"
         app:layout_constraintEnd_toStartOf="@id/edit_update_btn"
