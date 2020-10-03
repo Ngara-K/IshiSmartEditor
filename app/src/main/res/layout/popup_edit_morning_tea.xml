@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
-    android:background="@color/primaryBg">
+    android:background="@color/primaryBg"
+    android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -53,8 +52,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="@id/back_btn"
             app:layout_constraintEnd_toEndOf="@id/submit_btn"
+            app:layout_constraintStart_toStartOf="@id/back_btn"
             app:layout_constraintTop_toBottomOf="@id/back_btn">
 
             <com.google.android.material.button.MaterialButton
@@ -62,96 +61,96 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_15sdp"
-                android:layout_margin="@dimen/_10sdp"
                 android:layout_gravity="center"
+                android:layout_margin="@dimen/_10sdp"
+                android:enabled="false"
                 android:insetLeft="0dp"
                 android:insetTop="0dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
                 android:padding="0dp"
-                android:enabled="false"
                 app:shapeAppearanceOverlay="@style/OverlayButtonCircle"
                 app:strokeColor="@color/colorPrimary" />
 
             <!--Message Title-->
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/title_tv"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/message_title"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/title_inLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/title_inLayout"
                 android:layout_margin="@dimen/_5sdp"
-                app:boxStrokeColor="@color/colorDivider"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                app:boxStrokeColor="@color/colorDivider">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minLines="2"
                     android:maxLength="500"
-                    android:id="@+id/title_input"/>
+                    android:minLines="2" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--Message Summary-->
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/summary_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/summary_tv"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/message_summary"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/summary_inLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/summary_inLayout"
                 android:layout_margin="@dimen/_5sdp"
-                app:boxStrokeColor="@color/colorDivider"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                app:boxStrokeColor="@color/colorDivider">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/summary_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:minLines="4"
                     android:maxLength="1500"
-                    android:id="@+id/summary_input"/>
+                    android:minLines="4" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--Message Body-->
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/message_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/message_tv"
-                app:layout_constraintStart_toStartOf="@id/back_btn"
-                app:layout_constraintTop_toBottomOf="@id/summary_inLayout"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/message"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/back_btn"
+                app:layout_constraintTop_toBottomOf="@id/summary_inLayout" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/message_inLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/message_inLayout"
                 android:layout_margin="@dimen/_5sdp"
-                app:boxStrokeColor="@color/colorDivider"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                app:boxStrokeColor="@color/colorDivider">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/message_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:minLines="15"
                     android:maxLength="5000"
-                    android:id="@+id/message_input"/>
+                    android:minLines="15" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

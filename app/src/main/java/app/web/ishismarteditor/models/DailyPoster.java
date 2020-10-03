@@ -5,27 +5,24 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.io.Serializable;
 
-public class MorningTea implements Serializable {
+public class DailyPoster implements Serializable {
 
     private long id;
-    private String message_title;
-    private String message_summary;
-    private String message_body;
+    private String poster_summary;
+    private String poster_image_url;
     private String author_id;
     private DocumentReference editor_ref;
     private long time_mills;
     private PostDate post_date;
 
-    public MorningTea() {
+    DailyPoster () {
 
     }
 
-    public MorningTea(long id, String message_title, String message_summary, String message_body,
-                      String author_id, DocumentReference editor_ref, long time_mills, PostDate post_date) {
+    public DailyPoster(long id, String poster_summary, String poster_image_url, String author_id, DocumentReference editor_ref, long time_mills, PostDate post_date) {
         this.id = id;
-        this.message_title = message_title;
-        this.message_summary = message_summary;
-        this.message_body = message_body;
+        this.poster_summary = poster_summary;
+        this.poster_image_url = poster_image_url;
         this.author_id = author_id;
         this.editor_ref = editor_ref;
         this.time_mills = time_mills;
@@ -40,28 +37,12 @@ public class MorningTea implements Serializable {
         this.id = id;
     }
 
-    public String getMessage_title() {
-        return message_title;
+    public String getPoster_summary() {
+        return poster_summary;
     }
 
-    public void setMessage_title(String message_title) {
-        this.message_title = message_title;
-    }
-
-    public String getMessage_summary() {
-        return message_summary;
-    }
-
-    public void setMessage_summary(String message_summary) {
-        this.message_summary = message_summary;
-    }
-
-    public String getMessage_body() {
-        return message_body;
-    }
-
-    public void setMessage_body(String message_body) {
-        this.message_body = message_body;
+    public void setPoster_summary(String poster_summary) {
+        this.poster_summary = poster_summary;
     }
 
     public String getAuthor_id() {
@@ -96,15 +77,21 @@ public class MorningTea implements Serializable {
         this.post_date = post_date;
     }
 
+    public String getPoster_image_url() {
+        return poster_image_url;
+    }
 
-    public static class PostDate implements Serializable {
+    public void setPoster_image_url(String poster_image_url) {
+        this.poster_image_url = poster_image_url;
+    }
 
+    public static class PostDate implements Serializable{
         private String date;
         private String month;
         private String year;
         private Timestamp timestamp;
 
-        public PostDate() {
+        PostDate () {
 
         }
 

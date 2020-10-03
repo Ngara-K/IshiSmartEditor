@@ -6,14 +6,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,12 +23,10 @@ import java.util.concurrent.Executors;
 import app.web.ishismarteditor.R;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
-import io.noties.markwon.MarkwonConfiguration;
 import io.noties.markwon.MarkwonSpansFactory;
-import io.noties.markwon.RenderProps;
-import io.noties.markwon.SpanFactory;
 import io.noties.markwon.editor.MarkwonEditor;
 import io.noties.markwon.editor.MarkwonEditorTextWatcher;
+import io.noties.markwon.linkify.LinkifyPlugin;
 
 import static app.web.ishismarteditor.R.string.please_wait;
 import static app.web.ishismarteditor.R.string.required;
@@ -46,16 +39,14 @@ import static app.web.ishismarteditor.utils.AppUtils.morningTeaReference;
 public class EditMorningTeaPopUp extends FullScreenPopupView {
 
     private static String TAG = "Morning Tea Popup";
-
+    private static boolean valid;
+    private static String doc_id, message_title, message_summary, message_body;
     private TextInputEditText title_input, summary_input, message_input;
     private TextInputLayout title_inLayout, summary_inLayout, message_inLayout;
     private MaterialButton back_btn, submit_btn;
-    private static boolean valid;
     /*markwon library*/
     private Markwon markwon;
     private MarkwonEditor markwonEditor;
-
-    private static String doc_id, message_title, message_summary, message_body;
 
     public EditMorningTeaPopUp(@NonNull Context context, String document_id,
                                String title, String summary, String message) {
@@ -95,21 +86,13 @@ public class EditMorningTeaPopUp extends FullScreenPopupView {
         markwon = Markwon.builder(getContext()).usePlugin(new AbstractMarkwonPlugin() {
             @Override
             public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
-                builder.setFactory(Emphasis.class, new SpanFactory() {
-                    @Nullable
-                    @Override
-                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
-                        return new StyleSpan(Typeface.BOLD);
-                    }
-                }).setFactory(StrongEmphasis.class, new SpanFactory() {
-                    @Nullable
-                    @Override
-                    public Object getSpans(@NonNull MarkwonConfiguration configuration, @NonNull RenderProps props) {
-                        return new StyleSpan(Typeface.BOLD);
-                    }
-                });
+                builder.setFactory(Emphasis.class,
+                        (configuration, props) ->
+                        new StyleSpan(Typeface.BOLD)).setFactory(StrongEmphasis.class,
+                        (configuration, props) ->
+                                new StyleSpan(Typeface.BOLD));
             }
-        }).build();
+        }).usePlugin(LinkifyPlugin.create()).build();
 
         markwonEditor = MarkwonEditor.create(markwon);
 
@@ -120,27 +103,18 @@ public class EditMorningTeaPopUp extends FullScreenPopupView {
         message_input.addTextChangedListener(MarkwonEditorTextWatcher.withPreRender(markwonEditor,
                 Executors.newCachedThreadPool(), message_input));
 
-        back_btn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                smartDismiss();
-            }
-        });
+        back_btn.setOnClickListener(v -> smartDismiss());
 
-        submit_btn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!validation()) {
-                    /*if validation fails*/
-                    showMessage("Check for errors");
-                }
-                else {
-                    /*show loader...*/
-                    showLoading("Editing Post ...");
+        submit_btn.setOnClickListener(v -> {
+            if (!validation()) {
+                /*if validation fails*/
+                showMessage("Check for errors");
+            } else {
+                /*show loader...*/
+                showLoading("Editing Post ...");
 
-                    /*sending data*/
-                    editMorningTea();
-                }
+                /*sending data*/
+                editMorningTea();
             }
         });
     }
@@ -152,37 +126,25 @@ public class EditMorningTeaPopUp extends FullScreenPopupView {
         if (title_input.getText().toString().isEmpty()) {
             title_inLayout.setError(getContext().getString(required));
             valid = false;
-        }
-        
-        else if (title_input.getText().toString().length() < 10) {
+        } else if (title_input.getText().toString().length() < 10) {
             title_inLayout.setError(getContext().getString(required_10));
             valid = false;
-        }
-        
-        else if (summary_input.getText().toString().isEmpty()) {
+        } else if (summary_input.getText().toString().isEmpty()) {
             summary_inLayout.setError(getContext().getString(required));
             valid = false;
-        }
-        
-        else if (summary_input.getText().toString().length() < 25) {
+        } else if (summary_input.getText().toString().length() < 25) {
             summary_inLayout.setError(getContext().getString(required_25));
             valid = false;
-        }
-
-        else if (message_input.getText().toString().isEmpty()) {
+        } else if (message_input.getText().toString().isEmpty()) {
             message_inLayout.setError(getContext().getString(required));
             valid = false;
-        }
-
-        else if (message_input.getText().toString().length() < 100) {
+        } else if (message_input.getText().toString().length() < 100) {
             message_inLayout.setError(getContext().getString(required_100));
             valid = false;
-        }
-
-        else {
+        } else {
             valid = true;
         }
-        
+
         return valid;
     }
 
@@ -192,30 +154,16 @@ public class EditMorningTeaPopUp extends FullScreenPopupView {
         morningTeaReference.document(doc_id).update("message_title", title_input.getText().toString(),
                 "message_summary", summary_input.getText().toString(),
                 "message_body", message_input.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            /*show message when successful */
-                            dismissWith(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showMessage("Edited Successful ...");
-                                }
-                            });
-                        }
-
-                        else {
-                            /*show message when failed*/
-                            showMessage(task.getException().getMessage());
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        /*show message when successful */
+                        dismissWith(() -> showMessage("Edited Successful ..."));
+                    } else {
+                        /*show message when failed*/
+                        showMessage(task.getException().getMessage());
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure() returned: " + e.getMessage());
-            }
-        });
+                }).addOnFailureListener(e ->
+                Log.d(TAG, "onFailure() returned: " + e.getMessage()));
     }
 
     private void showMessage(String message) {

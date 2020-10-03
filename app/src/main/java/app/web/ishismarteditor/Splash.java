@@ -33,19 +33,15 @@ public class Splash extends AppCompatActivity {
 
         Glide.with(Splash.this).asGif().load(R.drawable.phone_glasses).into(binding.logo);
 
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(() -> {
 
-                if (firebaseUser != null) {
-                    startActivity(new Intent(Splash.this, Home.class));
-                }
-                else {
-                    startActivity(new Intent(Splash.this, SignIn.class));
-                }
-
-                finish();
+            if (firebaseUser != null) {
+                startActivity(new Intent(Splash.this, Home.class));
+            } else {
+                startActivity(new Intent(Splash.this, SignIn.class));
             }
+
+            finish();
         }, 3000);
     }
 }

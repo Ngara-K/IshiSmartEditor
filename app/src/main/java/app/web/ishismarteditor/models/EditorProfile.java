@@ -11,7 +11,7 @@ public class EditorProfile {
     private String organization;
     private String short_description;
 
-    EditorProfile () {
+    EditorProfile() {
 
     }
 

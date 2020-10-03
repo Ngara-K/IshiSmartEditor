@@ -4,12 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 
@@ -39,37 +35,23 @@ public class SignIn extends AppCompatActivity {
                 .dismissOnTouchOutside(false)
                 .asLoading();
 
-        binding.forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SignIn.this, ResetPassword.class));
+        binding.forgotPasswordTxt.setOnClickListener(v ->
+                startActivity(new Intent(SignIn.this, ResetPassword.class)));
+
+        binding.backBtn.setOnClickListener(v -> moveTaskToBack(true));
+
+        binding.loginBtn.setOnClickListener(v -> {
+
+            if (binding.emailAddressInput.getText().toString().isEmpty()) {
+                binding.emailAddressInput.setError("Email is empty");
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailAddressInput.getText().toString()).matches()) {
+                binding.emailAddressInput.setError("Wrong email format");
             }
-        });
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moveTaskToBack(true);
-            }
-        });
-
-        binding.loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (binding.emailAddressInput.getText().toString().isEmpty()) {
-                    binding.emailAddressInput.setError("Email is empty");
-                }
-                else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.emailAddressInput.getText().toString()).matches()) {
-                    binding.emailAddressInput.setError("Wrong email format");
-                }
-
-                if (binding.passwordInput.getText().toString().isEmpty()) {
-                    binding.passwordInput.setError("Password id empty");
-                }
-                else {
-                    loginUser();
-                }
+            if (binding.passwordInput.getText().toString().isEmpty()) {
+                binding.passwordInput.setError("Password id empty");
+            } else {
+                loginUser();
             }
         });
     }
@@ -79,36 +61,25 @@ public class SignIn extends AppCompatActivity {
         popupView.show();
 
         firebaseAuth.signInWithEmailAndPassword(binding.emailAddressInput.getText().toString(),
-                binding.passwordInput.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull final Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    firebaseUser = firebaseAuth.getCurrentUser();
-                    if (firebaseUser != null) {
-                        startActivity(new Intent(SignIn.this, Home.class));
-                        finish();
-                    }
-                    else {
+                binding.passwordInput.getText().toString()).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            startActivity(new Intent(SignIn.this, Home.class));
+                            finish();
+                        } else {
 
-                        new XPopup.Builder(SignIn.this)
-                                .asConfirm("Oops..!", "An error occurred", null,
-                                        "Okay", null, null,
-                                        true, 0).show();
-                    }
-                }
-
-                else {
-
-                    popupView.dismissWith(new Runnable() {
-                        @Override
-                        public void run() {
-                            showError(task.getException());
+                            new XPopup.Builder(SignIn.this)
+                                    .asConfirm("Oops..!", "An error occurred", null,
+                                            "Okay", null, null,
+                                            true, 0).show();
                         }
-                    });
+                    } else {
 
-                }
-            }
-        });
+                        popupView.dismissWith(() -> showError(task.getException()));
+
+                    }
+                });
     }
 
     private void showError(Exception exception) {

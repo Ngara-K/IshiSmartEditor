@@ -5,13 +5,17 @@
     <color name="colorPrimaryLight">#FFECB3</color>
     <color name="colorAccent">#FF9800</color>
 
-    <color name="colorPrimaryText">#f9f9f9</color>
-    <color name="colorSecondaryText">#F5F5F5</color>
+<!--    <color name="colorPrimaryText">#F5F5F5</color>-->
+<!--    <color name="colorSecondaryText">#BDBDBD</color>-->
 
     <color name="colorIcons">#F5F5F5</color>
     <color name="colorDivider">#BDBDBD</color>
 
     <color name="primaryBg">#212121</color>
+
+    <!--pix image picker-->
+    <color name="colorPrimaryPix">@color/colorPrimary</color>
+    <color name="colorPrimaryLightPix">@color/colorPrimaryDark</color>
 
     //custom colors
     <color name="white">#FFFFFF</color>
